@@ -155,7 +155,7 @@ export class BlogController {
 			whereConditions['blogId'] = blogId;
 		}
 		if (tag) {
-			whereConditions['tags IN'] = tag;
+			whereConditions['tags.tag'] = tag;
 		}
 		return this.articleService.findAndCount({ offset, limit, whereConditions })
 			.then(([list, count]) => { return { list, count }; });
