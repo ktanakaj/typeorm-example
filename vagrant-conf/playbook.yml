@@ -1,0 +1,133 @@
+---
+- hosts: default
+  vars:
+    timezone: "Asia/Tokyo"
+    nodesource: https://rpm.nodesource.com/setup_6.x
+    swaggeruisource: https://github.com/swagger-api/swagger-ui/archive/v3.0.9.tar.gz
+    swaggeruidest: /var/www/swagger
+    app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
+    app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
+    app_svr_dir: "/vagrant/typeorm-sample"
+    app_web_dir: "/vagrant/typeorm-sample-web"
+    app_log_dir: /var/log/local/typeorm-sample
+    app_db:
+      - typeorm_sample
+    app_db_users:
+      - user: typeorm_usr
+        password: typeorm001
+        privilege: "typeorm_sample.*:ALL"
+  tasks:
+    - block:
+      - block:
+        - name: Check timezone
+          shell: timedatectl | grep -e {{ timezone }}
+          register: timedatectl_timezone
+          check_mode: no
+          changed_when: false
+          failed_when: false
+        - name: Set timezone
+          shell: timedatectl set-timezone {{ timezone }}
+          when: timedatectl_timezone.stdout == ""
+      - block:
+        - name: Check Node.js repository version
+          shell: yum info nodejs | grep -e "Version\s*:\s*[6-9].*$"
+          register: nodejs_repository_version
+          check_mode: no
+          changed_when: false
+          failed_when: false
+        - name: Register Node.js repository
+          shell: curl --silent --location {{ nodesource }} | bash -
+          when: nodejs_repository_version.stdout == ""
+        - name: Upgrade all packages
+          yum: name=* state=latest
+        - name: Install the latest version of Node.js
+          yum: name=nodejs state=latest
+        - name: Install the latest version of MariaDB
+          yum: name=mariadb state=latest
+        - name: Install the latest version of MariaDB server
+          yum: name=mariadb-server state=latest
+        - name: Install the latest version of MySQL-python
+          yum: name=MySQL-python state=latest
+        - name: Install the latest version of nginx
+          yum: name=nginx state=latest
+        - name: Install the latest version of Git
+          yum: name=git state=latest
+      - block:
+        - name: Install "mocha" node.js package globally
+          npm: name=mocha global=yes
+        - name: Install "pm2" node.js package globally
+          npm: name=pm2 global=yes
+        - name: Install "typescript" node.js package globally
+          npm: name=typescript global=yes
+        - name: Install "typedoc" node.js package globally
+          npm: name=typedoc global=yes
+        - name: Install "tslint" node.js package globally
+          npm: name=tslint global=yes
+        - name: Install "node-pre-gyp" node.js package globally
+          npm: name=node-pre-gyp global=yes
+      - block:
+        - name: Action to enable service mariadb
+          service: name=mariadb state=started enabled=yes
+        - name: Copy the web app configuration to nginx
+          copy: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=yes
+        - name: Action to enable service nginx
+          service: name=nginx state=restarted enabled=yes
+      - block:
+        - name: Action to disable SELinux for nginx
+          selinux: state=permissive policy=targeted
+        - name: Action to enable service firewalld
+          service: name=firewalld state=started enabled=yes
+        - name: Open port for HTTP
+          firewalld: service=http permanent=true state=enabled
+        - name: Open port for MariaDB only internal zone
+          firewalld: service=mysql permanent=true state=enabled zone=internal
+        - name: Set private ip addresses to internal zone
+          firewalld: source='172.16.0.0/12' zone=internal state=enabled
+        - name: Action to reload service firewalld
+          service: name=firewalld state=reloaded enabled=yes
+      - block:
+        - name: Create the web application logging directory
+          file: path={{ app_log_dir }} state=directory owner=root group=root mode=1777
+        - name: Create the web application database
+          mysql_db: name={{ item }} encoding=utf8 state=present
+          with_items: "{{ app_db }}"
+        - name: Craete the web application db user
+          mysql_user: name={{ item[1].user }} password={{ item[1].password }} host={{ item[0] }} priv={{ item[1].privilege }} state=present
+          with_nested:
+            - [ 'localhost', '%' ]
+            - "{{ app_db_users }}"
+      - block:
+        - name: Check "pm2" service registration
+          shell: systemctl status pm2-vagrant.service | grep -e "enabled"
+          register: pm2_service_loaded
+          check_mode: no
+          changed_when: false
+          failed_when: false
+        - name: Register "pm2" to service by vagrant user
+          shell: pm2 startup systemd -u vagrant --hp /home/vagrant
+          when: pm2_service_loaded.stdout == ""
+        - name: Action to enable service pm2
+          service: name=pm2-vagrant state=started enabled=yes
+      - block:
+        - name: Create Swagger-UI directory
+          file: path={{ swaggeruidest }} state=directory owner=root group=root mode=0755
+          register: swaggerui_installed
+        - name: Install Swagger-UI from an archive
+          shell: curl -sL "{{ swaggeruisource }}" | tar xz -C {{ swaggeruidest }} --strip=2 '*/dist' --no-same-owner --no-same-permissions
+          when: swaggerui_installed.changed == true
+      become: true
+
+    - block:
+      - block:
+        - name: Install node.js package for the server application
+          npm: path={{ app_svr_dir }} executable="npm --no-bin-links"
+        - name: Install node.js package for the client application
+          npm: path={{ app_web_dir }} executable="npm --no-bin-links"
+        - name: Build the server application
+          shell: npm run {{ build_target }} chdir={{ app_svr_dir }}
+        - name: Build the client application
+          shell: npm run {{ build_target }} chdir={{ app_web_dir }}
+        - name: Register the web application to pm2
+          shell: npm start chdir={{ app_svr_dir }}
+        - name: Save pm2 current processes
+          shell: pm2 save

@@ -1,0 +1,73 @@
+---
+  database:
+    type: "mysql"
+    host: "localhost"
+    port: 3306
+    username: "typeorm_usr"
+    password: "typeorm001"
+    database: "typeorm_sample"
+  log4js:
+    appenders:
+      - type: "datefile"
+        category: "access" # アクセスログ
+        filename: "/var/log/local/typeorm-sample/access.log"
+        pattern: "-yyyy-MM-dd"
+        backups: 10
+      - type: "datefile"
+        category: "error" # エラーログ
+        filename: "/var/log/local/typeorm-sample/error.log"
+        pattern: "-yyyy-MM-dd"
+        maxLogSize: 107374182400 # 100MB
+      - type: "file"
+        category: "debug" # デバッグログ
+        filename: "/var/log/local/typeorm-sample/debug.log"
+        backups: 10
+        maxLogSize: 10737418240 # 10MB
+      - type: "console" # コンソール
+    levels:
+      access: "INFO"
+      error: "INFO"
+      debug: "DEBUG"
+    replaceConsole: true
+  swagger:
+    swagger: "2.0"
+    info:
+      title: "typeorm-sample"
+      version: 0.1.0
+      description: "typeorm-sample API。"
+    basePath: "/api"
+    consumes:
+      - "application/json"
+    produces:
+      - "application/json"
+      - "text/plain"
+    parameters:
+      offset:
+        in: query
+        name: offset
+        description: 開始位置
+        type: integer
+        format: int32
+      limit:
+        in: query
+        name: limit
+        description: 取得件数
+        type: integer
+        format: int32
+    responses:
+      BadRequest:
+        description: バリデーションNG
+        schema:
+          type: string
+      Unauthorized:
+        description: 認証NG
+        schema:
+          type: string
+      Forbidden:
+        description: 権限NG
+        schema:
+          type: string
+      NotFound:
+        description: 該当データ無し
+        schema:
+          type: string
