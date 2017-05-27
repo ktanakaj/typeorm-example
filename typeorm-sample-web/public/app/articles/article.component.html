@@ -1,0 +1,97 @@
+<h1 *ngIf="blog">{{ blog.title | translate }}</h1>
+<div>
+    <form #f="ngForm" (ngSubmit)="loadPage(currentPage)" novalidate>
+        <button type="submit" class="btn btn-primary btn-sm">{{ "UPDATE" | translate }}</button>
+        <button type="button" class="btn btn-warning btn-sm" (click)="openForm()">{{ "NEW" | translate }}</button>
+    </form>
+    <pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ "ARTICLE.ID" | translate }}</th>
+            <th>{{ "ARTICLE.TITLE" | translate }}</th>
+            <th>{{ "ARTICLE.BODY" | translate }}</th>
+            <th>{{ "TAG.TAG" | translate }}</th>
+            <th>{{ "ARTICLE.CREATED_AT" | translate }}</th>
+            <th>{{ "ARTICLE.UPDATED_AT" | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let article of articles">
+            <td>{{ article.id }}</td>
+            <td>{{ article.title }}</td>
+            <td>{{ article.body }}</td>
+            <td>
+                <span *ngFor="let tag of article.tags">
+                    {{ tag.tag }}
+                </span>
+            </td>
+            <td>{{ article.createdAt | date:'short' }}</td>
+            <td>{{ article.updatedAt | date:'short' }}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" (click)="openForm(article.id)">{{ "EDIT" | translate }}</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(article.id)">{{ "DELETE" | translate }}</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+
+<div bsModal #formModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" *ngIf="articleForm">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left"><span *ngIf="!articleForm.id">{{ "ARTICLE_PAGE.NEW_TITLE" | translate }}</span><span *ngIf="articleForm.id">{{ "ARTICLE_PAGE.EDIT_TITLE" | translate }}</span></h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeForm()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #f="ngForm" (ngSubmit)="submitForm()" novalidate>
+                    <fieldset class="form-group">
+                        <label for="articleForm.title">{{ "ARTICLE.TITLE" | translate }}</label>
+                        <input type="text" id="articleForm.title" name="title" [(ngModel)]="articleForm.title" #title="ngModel" placeholder="" required maxlength="255" />
+                        <div class="warning" *ngIf="title.errors">
+                            <div [hidden]="!title.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                            <div [hidden]="!title.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="articleForm.body">{{ "ARTICLE.BODY" | translate }}</label>
+                        <textarea id="articleForm.body" name="body" [(ngModel)]="articleForm.body" #body="ngModel" placeholder="" required></textarea>
+                        <div class="warning" *ngIf="body.errors">
+                            <div [hidden]="!body.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "SUBMIT" | translate }}</button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="closeForm()">{{ "BACK" | translate }}</button>
+                    <div class="error">{{ error | translate }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" *ngIf="articleForm">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{ "CONFIRM_DELETE" | translate }}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #f="ngForm" (ngSubmit)="closeDelete()" novalidate>
+                    <fieldset class="form-group">
+                        <div>{{ "CONFIRM_DELETE_BODY" | translate:articleForm }}</div>
+                    </fieldset>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="delete()">{{ "DELETE" | translate }}</button>
+                    <button type="submit" class="btn btn-secondary btn-sm">{{ "BACK" | translate }}</button>
+                    <div class="error">{{ error | translate }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

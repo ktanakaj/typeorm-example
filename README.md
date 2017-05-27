@@ -1,6 +1,7 @@
 typeorm-sample
 ===============
-[TypeORM](https://github.com/typeorm/typeorm) + [TypeDI](https://github.com/pleerock/typedi) + [routing-controllers](https://github.com/pleerock/routing-controllers) を使ったWeb API（ブログ）のサンプルです。
+[TypeORM](https://github.com/typeorm/typeorm) + [TypeDI](https://github.com/pleerock/typedi) + [routing-controllers](https://github.com/pleerock/routing-controllers) + [Angular](https://angular.io/) を使ったWebアプリのサンプルです。  
+※ テーブル構成などはブログをイメージしていますが、最終的にブログっぽくはないです。管理画面的です。
 
 ## 環境
 * CentOS 7
@@ -36,9 +37,9 @@ typeorm-sample
 ※ `npm install` でエラーになる場合は `vagrant provision` でもう一度実行してみてください。
 
 ## 実行方法
-Web APIはVM起動時に自動的に立ち上がります。
+WebアプリはVM起動時に自動的に立ち上がります。
 
-デフォルトのVMでは http://DHCPで振られたIPアドレス/swagger/?url=/api-docs.json でアクセス可能です。
+デフォルトのVMでは http://[DHCPで振られたIP]/ でアクセス可能です。
 
 ※ Microsoft EdgeだとプライベートIPはアクセスできない場合あり。  
 ※ 自動起動に失敗する場合は、後述の `npm start` コマンドを実行してください。

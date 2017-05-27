@@ -16,6 +16,7 @@
       - user: typeorm_usr
         password: typeorm001
         privilege: "typeorm_sample.*:ALL"
+    build_target: build
   tasks:
     - block:
       - block:
@@ -57,6 +58,8 @@
           npm: name=mocha global=yes
         - name: Install "pm2" node.js package globally
           npm: name=pm2 global=yes
+        - name: Install "webpack" node.js package globally
+          npm: name=webpack global=yes
         - name: Install "typescript" node.js package globally
           npm: name=typescript global=yes
         - name: Install "typedoc" node.js package globally

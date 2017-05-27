@@ -1,0 +1,90 @@
+<h1>{{ "BLOG_PAGE.LIST_TITLE" | translate }}</h1>
+<div>
+    <form #f="ngForm" (ngSubmit)="loadPage(currentPage)" novalidate>
+        <button type="submit" class="btn btn-primary btn-sm">{{ "UPDATE" | translate }}</button>
+        <button type="button" class="btn btn-warning btn-sm" (click)="openForm()">{{ "NEW" | translate }}</button>
+    </form>
+    <pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ "BLOG.ID" | translate }}</th>
+            <th>{{ "BLOG.TITLE" | translate }}</th>
+            <th>{{ "BLOG.AUTHOR" | translate }}</th>
+            <th>{{ "BLOG.CREATED_AT" | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let blog of blogs">
+            <td><a routerLink="/blogs/{{ blog.id }}/articles/">{{ blog.id }}</a></td>
+            <td>{{ blog.title }}</td>
+            <td>{{ blog.author }}</td>
+            <td>{{ blog.createdAt | date:'short' }}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" (click)="openForm(blog.id)">{{ "EDIT" | translate }}</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(blog.id)">{{ "DELETE" | translate }}</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+
+<div bsModal #formModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" *ngIf="blogForm">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left"><span *ngIf="!blogForm.id">{{ "BLOG_PAGE.NEW_TITLE" | translate }}</span><span *ngIf="blogForm.id">{{ "BLOG_PAGE.EDIT_TITLE" | translate }}</span></h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeForm()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #f="ngForm" (ngSubmit)="submitForm()" novalidate>
+                    <fieldset class="form-group">
+                        <label for="blogForm.title">{{ "BLOG.TITLE" | translate }}</label>
+                        <input type="text" id="blogForm.title" name="title" [(ngModel)]="blogForm.title" #title="ngModel" placeholder="" required maxlength="255" />
+                        <div class="warning" *ngIf="title.errors">
+                            <div [hidden]="!title.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                            <div [hidden]="!title.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="blogForm.author">{{ "BLOG.AUTHOR" | translate }}</label>
+                        <input type="text" id="blogForm.author" name="author" [(ngModel)]="blogForm.author" #author="ngModel" placeholder="" required maxlength="255" />
+                        <div class="warning" *ngIf="author.errors">
+                            <div [hidden]="!author.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                            <div [hidden]="!author.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "SUBMIT" | translate }}</button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="closeForm()">{{ "BACK" | translate }}</button>
+                    <div class="error">{{ error | translate }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" *ngIf="blogForm">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{ "CONFIRM_DELETE" | translate }}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #f="ngForm" (ngSubmit)="closeDelete()" novalidate>
+                    <fieldset class="form-group">
+                        <div>{{ "CONFIRM_DELETE_BODY" | translate:blogForm }}</div>
+                    </fieldset>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="delete()">{{ "DELETE" | translate }}</button>
+                    <button type="submit" class="btn btn-secondary btn-sm">{{ "BACK" | translate }}</button>
+                    <div class="error">{{ error | translate }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

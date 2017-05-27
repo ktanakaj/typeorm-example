@@ -1,0 +1,34 @@
+﻿<header class="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid hidden-xs">
+            <div class="navbar-header">
+                <a class="navbar-brand" routerLink="/">{{ "APP_NAME" | translate }}</a>
+            </div>
+            <div id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/swagger/?url=/api-docs.json">{{ "SWAGGER_UI" | translate }}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid visible-xs">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" (click)="isCollapsed = !isCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" routerLink="/">{{ "APP_NAME" | translate }}</a>
+            </div>
+            <div id="navbar" [collapse]="isCollapsed">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/swagger/?url=/api-docs.json">{{ "SWAGGER_UI" | translate }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <router-outlet></router-outlet>
+</div>
+<footer class="footer">{{ "COPYRIGHT" | translate }}</footer>

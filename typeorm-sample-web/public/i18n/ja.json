@@ -1,0 +1,51 @@
+{
+	"APP_NAME": "TypeORM Blog Sample",
+	"COPYRIGHT": "Copyright (C) 2017 Koichi Tanaka All Rights Reserved.",
+	"SUBMIT": "送信",
+	"BACK": "戻る",
+	"NEW": "新規",
+	"EDIT": "編集",
+	"DELETE": "削除",
+	"UPDATE": "更新",
+	"CONFIRM_DELETE": "削除確認",
+	"CONFIRM_DELETE_BODY": "{{ title }} を削除します。本当によろしいですか？",
+	"ERROR": {
+		"BAD_REQUEST": "指定されたパラメータは無効です。",
+		"NOT_FOUND": "指定されたページの読込に失敗しました。ブラウザを再読み込みしてください。",
+		"FATAL": "エラーが発生しました。ブラウザを再読み込みして再度実行してください。"
+	},
+	"VALIDATION": {
+		"REQUIRED": "項目は必須です。",
+		"MAX_LENGTH": "{{ maxlength }}文字までで入力してください。"
+	},
+	"BLOG": {
+		"ID": "ブログID",
+		"TITLE": "ブログタイトル",
+		"AUTHOR": "作者",
+		"CREATED_AT": "開設日時",
+		"UPDATED_AT": "更新日時"
+	},
+	"ARTICLE": {
+		"ID": "記事ID",
+		"TITLE": "記事タイトル",
+		"BODY": "本文",
+		"CREATED_AT": "投稿日時",
+		"UPDATED_AT": "更新日時"
+	},
+	"TAG": {
+		"ID": "タグID",
+		"TAG": "タグ",
+		"CREATED_AT": "作成日時"
+	},
+	"BLOG_PAGE": {
+		"LIST_TITLE": "ブログ一覧",
+		"NEW_TITLE": "ブログ作成",
+		"EDIT_TITLE": "ブログ情報編集"
+	},
+	"ARTICLE_PAGE": {
+		"LIST_TITLE": "記事一覧",
+		"NEW_TITLE": "記事投稿",
+		"EDIT_TITLE": "記事編集"
+	},
+	"SWAGGER_UI": "Swagger UI"
+}

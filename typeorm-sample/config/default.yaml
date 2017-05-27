@@ -40,7 +40,17 @@
       - "application/json"
     produces:
       - "application/json"
-      - "text/plain"
+    definitions:
+      Error:
+        type: object
+        description: エラー情報
+        properties:
+          name:
+            type: string
+            description: エラー名称
+          message:
+            type: string
+            description: エラーメッセージ
     parameters:
       offset:
         in: query
@@ -58,16 +68,16 @@
       BadRequest:
         description: バリデーションNG
         schema:
-          type: string
+          $ref: '#/definitions/Error'
       Unauthorized:
         description: 認証NG
         schema:
-          type: string
+          $ref: '#/definitions/Error'
       Forbidden:
         description: 権限NG
         schema:
-          type: string
+          $ref: '#/definitions/Error'
       NotFound:
         description: 該当データ無し
         schema:
-          type: string
+          $ref: '#/definitions/Error'

@@ -1,0 +1,26 @@
+{
+	"APP_NAME": "TypeORM Blog Sample",
+	"COPYRIGHT": "Copyright (C) 2017 Koichi Tanaka All Rights Reserved.",
+	"VIEW": "View",
+	"START": "Start",
+	"UPDATE": "Update",
+	"ERROR": {
+		"BAD_REQUEST": "Bad request.",
+		"NOT_FOUND": "Sorry. The resource is not found.",
+		"FATAL": "Fatal Error. Please refresh the page and retry."
+	},
+	"LIFE": {
+		"GENERATION": "Generation",
+		"IP": "IP",
+		"PORT": "Port",
+		"PROTOCOL": "Protocol",
+		"SOURCE": "Source",
+		"CREATED_AT": "Created At",
+		"COUNT": "Count",
+		"UNCONFIRMED": "Unconfirmed"
+	},
+	"TOP": {
+		"LIFE_LIST_TITLE": "Port Life List",
+		"LIFE_DETAIL_TITLE": "Port Life Detail"
+	}
+}

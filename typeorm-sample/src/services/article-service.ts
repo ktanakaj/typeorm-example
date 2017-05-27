@@ -38,6 +38,8 @@ export class ArticleService {
 			limit: options.limit || Number.MAX_SAFE_INTEGER,
 			innerJoinAndSelect: {
 				"blog": "article.blog",
+			},
+			leftJoinAndSelect: {
 				"tags": "article.tags",
 			},
 		};
@@ -54,11 +56,13 @@ export class ArticleService {
 			alias: 'article',
 			innerJoinAndSelect: {
 				"blog": "article.blog",
+			},
+			leftJoinAndSelect: {
 				"tags": "article.tags",
 			},
 		});
 		if (!article) {
-			throw new NotFoundError(`article id=${id} is not found`);
+			throw new NotFoundError(`article is not found`);
 		}
 		return article;
 	}
@@ -71,7 +75,7 @@ export class ArticleService {
 	async insert(article: Article): Promise<Article> {
 		const blog = await this.blogRepository.findOneById(article.blog.id);
 		if (!blog) {
-			throw new NotFoundError(`blog id=${article.blog.id} is not found`);
+			throw new NotFoundError(`blog is not found`);
 		}
 		article.tags = await this.relateTags(article.tags);
 		return this.articleRepository.persist(article);
@@ -85,10 +89,10 @@ export class ArticleService {
 	async update(article: Article): Promise<Article> {
 		const old = await this.findOneById(article.id);
 		if (!old) {
-			throw new NotFoundError(`article id=${article.id} is not found`);
+			throw new NotFoundError(`article is not found`);
 		}
 		if (article.blog.id != old.blog.id) {
-			throw new BadRequestError(`blogId can't be changed`);
+			throw new BadRequestError(`blog id can't be changed`);
 		}
 		article.tags = await this.relateTags(article.tags);
 		return this.articleRepository.persist(Object.assign(old, article));
@@ -102,7 +106,7 @@ export class ArticleService {
 	async delete(id: number): Promise<Article> {
 		const article = await this.findOneById(id);
 		if (!article) {
-			throw new NotFoundError(`article id=${id} is not found`);
+			throw new NotFoundError(`article is not found`);
 		}
 		return this.articleRepository.remove(article);
 	}
