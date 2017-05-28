@@ -2,7 +2,7 @@
  * ブログ記事コントローラクラスのモジュール。
  * @module ./controllers/article-controller
  */
-import { JsonController, Param, Body, Get, Post, Put, Delete, Render, OnUndefined, Redirect, QueryParam } from "routing-controllers";
+import { JsonController, Param, Body, Get, Post, Put, Delete, QueryParam } from "routing-controllers";
 import { Inject } from "typedi";
 import { Article } from "../entities/article"
 import { ArticleService } from "../services/article-service"

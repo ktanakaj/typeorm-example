@@ -2,7 +2,7 @@
  * ブログコントローラクラスのモジュール。
  * @module ./controllers/blog-controller
  */
-import { JsonController, Param, Body, Get, Post, Put, Delete, Render, OnUndefined, Redirect, QueryParam, NotFoundError } from "routing-controllers";
+import { JsonController, Param, Body, Get, Post, Put, Delete, QueryParam } from "routing-controllers";
 import { Inject } from "typedi";
 import { Blog } from "../entities/blog"
 import { BlogService } from "../services/blog-service"
