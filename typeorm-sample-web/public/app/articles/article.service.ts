@@ -30,8 +30,8 @@ export class ArticleService {
 	 * @returns ブログ記事一覧情報。
 	 * @throws 通信エラーの場合。
 	 */
-	find(blogId: number, offset: number, limit: number): Promise<{ count: number, list: Article[] }> {
-		return this.http.get('/api/articles/', { params: {blogId, offset, limit} })
+	find(blogId: number, offset: number, limit: number, tag?: string): Promise<{ count: number, list: Article[] }> {
+		return this.http.get('/api/articles/', { params: { blogId, offset, limit, tag } })
 			.retry(MAX_RETRY)
 			.toPromise()
 			.then((res) => res.json())

@@ -21,10 +21,10 @@
         <tr *ngFor="let article of articles">
             <td>{{ article.id }}</td>
             <td>{{ article.title }}</td>
-            <td>{{ article.body }}</td>
+            <td class="multiline">{{ article.body }}</td>
             <td>
                 <span *ngFor="let tag of article.tags">
-                    {{ tag.tag }}
+                    <a routerLink="/blogs/{{ blog.id }}/articles/" [queryParams]="{ tag: tag.tag }">{{ tag.tag }}</a>
                 </span>
             </td>
             <td>{{ article.createdAt | date:'short' }}</td>
@@ -48,25 +48,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form #f="ngForm" (ngSubmit)="submitForm()" novalidate>
+                <form #f="ngForm" (ngSubmit)="submitForm()" class="form-horizontal" novalidate>
                     <fieldset class="form-group">
-                        <label for="articleForm.title">{{ "ARTICLE.TITLE" | translate }}</label>
-                        <input type="text" id="articleForm.title" name="title" [(ngModel)]="articleForm.title" #title="ngModel" placeholder="" required maxlength="255" />
-                        <div class="warning" *ngIf="title.errors">
-                            <div [hidden]="!title.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
-                            <div [hidden]="!title.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
+                        <label for="articleForm.title" class="control-label col-xs-3">{{ "ARTICLE.TITLE" | translate }}</label>
+                        <div class="col-xs-8">
+                            <input type="text" id="articleForm.title" class="form-control" name="title" [(ngModel)]="articleForm.title" #title="ngModel" placeholder="" required maxlength="255">
+                            <div class="warning" *ngIf="title.errors">
+                                <div [hidden]="!title.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                                <div [hidden]="!title.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
+                            </div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <label for="articleForm.body">{{ "ARTICLE.BODY" | translate }}</label>
-                        <textarea id="articleForm.body" name="body" [(ngModel)]="articleForm.body" #body="ngModel" placeholder="" required></textarea>
-                        <div class="warning" *ngIf="body.errors">
-                            <div [hidden]="!body.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                        <label for="articleForm.body" class="control-label col-xs-3">{{ "ARTICLE.BODY" | translate }}</label>
+                        <div class="col-xs-8">
+                            <textarea id="articleForm.body" class="form-control" name="body" [(ngModel)]="articleForm.body" #body="ngModel" placeholder="" required></textarea>
+                            <div class="warning" *ngIf="body.errors">
+                                <div [hidden]="!body.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
+                            </div>
                         </div>
                     </fieldset>
-                    <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "SUBMIT" | translate }}</button>
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="closeForm()">{{ "BACK" | translate }}</button>
-                    <div class="error">{{ error | translate }}</div>
+                    <fieldset class="form-group">
+                        <label for="articleForm.tag" class="control-label col-xs-3">{{ "TAG.TAG" | translate }}</label>
+                        <div class="col-xs-8">
+                            <input type="text" id="articleForm.tag" class="form-control" name="tag" [(ngModel)]="articleForm.tag" #tag="ngModel" placeholder="">
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-8">
+                            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "SUBMIT" | translate }}</button>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="closeForm()">{{ "BACK" | translate }}</button>
+                            <div class="error">{{ error | translate }}</div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

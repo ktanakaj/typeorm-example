@@ -3,12 +3,16 @@
  * @module ./app/articles/article.component
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Blog } from '../blogs/blog.model';
 import { Article } from './article.model';
 import { BlogService } from '../blogs/blog.service';
 import { ArticleService } from './article.service';
+
+interface ArticleForm extends Article {
+	tag?: string;
+}
 
 /**
  * ブログ記事ページコンポーネントクラス。
@@ -20,6 +24,8 @@ import { ArticleService } from './article.service';
 export class ArticleComponent implements OnInit {
 	/** ブログ */
 	blog: Blog;
+	/** タグ */
+	tag: string;
 	/** ブログ記事一覧 */
 	articles: Article[] = [];
 	/** ブログ記事総数 */
@@ -29,7 +35,7 @@ export class ArticleComponent implements OnInit {
 	/** 1ページの表示件数 */
 	pageMax: number = 10;
 	/** ブログ記事フォーム */
-	articleForm: Article;
+	articleForm: ArticleForm;
 	/** エラーメッセージ */
 	error: string;
 	/** ブログ記事編集モーダル */
@@ -44,17 +50,20 @@ export class ArticleComponent implements OnInit {
 	 * @param articleService ブログ記事サービス。
 	 */
 	constructor(
+		private router: Router,
 		private route: ActivatedRoute,
 		private blogService: BlogService,
 		private articleService: ArticleService) { }
 
 	/**
 	 * コンポーネント起動時の処理。
-	 * @return 処理状態。
 	 */
-	async ngOnInit(): Promise<void> {
-		this.blog = await this.blogService.findById(this.route.snapshot.params['blogId']);
-		return this.loadPage(this.currentPage);
+	ngOnInit(): void {
+		this.router.events.subscribe(async () => {
+			this.blog = await this.blogService.findById(this.route.snapshot.params['blogId']);
+			this.tag = this.route.snapshot.queryParams["tag"];
+			return await this.loadPage(this.currentPage);
+		});
 	}
 
 	/**
@@ -72,7 +81,7 @@ export class ArticleComponent implements OnInit {
 	 * @returns 処理状態。
 	 */
 	async loadPage(page: number): Promise<void> {
-		const info = await this.articleService.find(this.blog.id, (page - 1) * this.pageMax, this.pageMax);
+		const info = await this.articleService.find(this.blog.id, (page - 1) * this.pageMax, this.pageMax, this.tag);
 		this.length = info.count;
 		this.articles = info.list;
 	}
@@ -84,10 +93,11 @@ export class ArticleComponent implements OnInit {
 	 */
 	async openForm(id: number = 0): Promise<void> {
 		this.error = '';
-		this.articleForm = { blog: this.blog, tags: [] };
+		let article: Article = { blog: this.blog, tags: [] };
 		if (id) {
-			this.articleForm = await this.articleService.findById(id);
+			article = await this.articleService.findById(id);
 		}
+		this.articleForm = this.articleToForm(article);
 		this.formModal.show();
 	}
 
@@ -97,17 +107,42 @@ export class ArticleComponent implements OnInit {
 	 */
 	async submitForm(): Promise<void> {
 		this.error = '';
+		let article = this.formToArticle(this.articleForm);
 		try {
-			if (this.articleForm.id) {
-				await this.articleService.update(this.articleForm);
+			if (article.id) {
+				await this.articleService.update(article);
 			} else {
-				await this.articleService.insert(this.articleForm);
+				await this.articleService.insert(article);
 			}
 			await this.loadPage(this.currentPage);
 			this.closeForm();
 		} catch (e) {
 			this.error = e.message || e;
 		}
+	}
+
+	/**
+	 * 記事を記事フォームに変換する。
+	 * @param article 記事。
+	 * @returns 記事フォーム。
+	 */
+	private articleToForm(article: Article): ArticleForm {
+		let form: ArticleForm = Object.assign({}, article);
+		form.tag = article.tags.map((t) => t.tag).join(' ');
+		return form;
+	}
+
+	/**
+	 * 記事フォームを記事に変換する。
+	 * @param form 記事フォーム。
+	 * @returns 記事。
+	 */
+	private formToArticle(form: ArticleForm): Article {
+		let article: Article = Object.assign({}, form);
+		for (let tag of form.tag.split(' ')) {
+			article.tags.push({ tag });
+		}
+		return article;
 	}
 
 	/**

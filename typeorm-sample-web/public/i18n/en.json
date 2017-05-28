@@ -1,26 +1,51 @@
 {
 	"APP_NAME": "TypeORM Blog Sample",
 	"COPYRIGHT": "Copyright (C) 2017 Koichi Tanaka All Rights Reserved.",
-	"VIEW": "View",
-	"START": "Start",
+	"SUBMIT": "Submit",
+	"BACK": "Back",
+	"NEW": "New",
+	"EDIT": "Edit",
+	"DELETE": "Delete",
 	"UPDATE": "Update",
+	"CONFIRM_DELETE": "Delete",
+	"CONFIRM_DELETE_BODY": "Are you sure you want to delete {{ title }}?",
 	"ERROR": {
 		"BAD_REQUEST": "Bad request.",
 		"NOT_FOUND": "Sorry. The resource is not found.",
 		"FATAL": "Fatal Error. Please refresh the page and retry."
 	},
-	"LIFE": {
-		"GENERATION": "Generation",
-		"IP": "IP",
-		"PORT": "Port",
-		"PROTOCOL": "Protocol",
-		"SOURCE": "Source",
-		"CREATED_AT": "Created At",
-		"COUNT": "Count",
-		"UNCONFIRMED": "Unconfirmed"
+	"VALIDATION": {
+		"REQUIRED": "Please input this box.",
+		"MAX_LENGTH": "Please type in this box characters less than {{ maxlength }} characters."
 	},
-	"TOP": {
-		"LIFE_LIST_TITLE": "Port Life List",
-		"LIFE_DETAIL_TITLE": "Port Life Detail"
-	}
+	"BLOG": {
+		"ID": "Blog ID",
+		"TITLE": "Blog Title",
+		"AUTHOR": "Author",
+		"CREATED_AT": "Created at",
+		"UPDATED_AT": "Updated at"
+	},
+	"ARTICLE": {
+		"ID": "Article ID",
+		"TITLE": "Title",
+		"BODY": "Body",
+		"CREATED_AT": "Created at",
+		"UPDATED_AT": "Updated at"
+	},
+	"TAG": {
+		"ID": "Tag ID",
+		"TAG": "Tag",
+		"CREATED_AT": "Created at"
+	},
+	"BLOG_PAGE": {
+		"LIST_TITLE": "Blog List",
+		"NEW_TITLE": "New Blog",
+		"EDIT_TITLE": "Edit Blog"
+	},
+	"ARTICLE_PAGE": {
+		"LIST_TITLE": "Article List",
+		"NEW_TITLE": "New Article",
+		"EDIT_TITLE": "Edit Article"
+	},
+	"SWAGGER_UI": "Swagger UI"
 }
