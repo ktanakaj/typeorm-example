@@ -14,6 +14,7 @@ typeorm-sample
 * Angular 4.x
     * webpack 2.x
     * ngx-translate 6.x
+* swagger-jsdoc 1.x
 * Mocha 3.x
     * Power-assert 1.x
 
@@ -32,7 +33,7 @@ typeorm-sample
 
 ## 環境構築手順
 1. Vagrantをインストールした後、ファイル一式をVMのフォルダとする場所に展開。
-* `vagrant up` でVM環境を構築（アプリの初回ビルド等も自動実行）。
+2. `vagrant up` でVM環境を構築（アプリの初回ビルド等も自動実行）。
 
 ※ `npm install` でエラーになる場合は `vagrant provision` でもう一度実行してみてください。
 
