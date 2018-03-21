@@ -3,7 +3,7 @@
  * @module ./app/blogs/blog.service
  */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ResponseError } from '../core/response-error';
 import { Blog } from './blog.model';
 
@@ -19,7 +19,7 @@ export class BlogService {
 	 * モジュールをDIしてコンポーネントを生成する。
 	 * @param http HTTPモジュール。
 	 */
-	constructor(private http: Http) { }
+	constructor(private http: HttpClient) { }
 
 	/**
 	 * ブログ一覧を取得する。
@@ -29,10 +29,12 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	find(offset: number, limit: number): Promise<{ count: number, list: Blog[] }> {
-		return this.http.get('/api/blogs/', { params: {offset,  limit} })
+		const params = new HttpParams();
+		params.set('offset', String(offset));
+		params.set('limit', String(limit));
+		return this.http.get<{ count: number, list: Blog[] }>('/api/blogs/', { params })
 			.retry(MAX_RETRY)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -43,10 +45,9 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	findById(id: number): Promise<Blog> {
-		return this.http.get('/api/blogs/' + id)
+		return this.http.get<Blog>('/api/blogs/' + id)
 			.retry(MAX_RETRY)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -57,9 +58,8 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	insert(blog: Blog): Promise<Blog> {
-		return this.http.post('/api/blogs/', blog)
+		return this.http.post<Blog>('/api/blogs/', blog)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -70,9 +70,8 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	update(blog: Blog): Promise<Blog> {
-		return this.http.put('/api/blogs/' + blog.id, blog)
+		return this.http.put<Blog>('/api/blogs/' + blog.id, blog)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -83,9 +82,8 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	delete(id: number): Promise<Blog> {
-		return this.http.delete('/api/blogs/' + id)
+		return this.http.delete<Blog>('/api/blogs/' + id)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 }

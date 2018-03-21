@@ -2,10 +2,9 @@
  * @file TypeORMブログサンプルルートモジュール。
  */
 import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -58,7 +57,7 @@ class DefaultErrorHandler implements ErrorHandler {
 	imports: [
 		BrowserModule,
 		FormsModule,
-		HttpModule,
+		HttpClientModule,
 		RouterModule.forRoot(appRoutes),
 		TranslateModule.forRoot({
 			loader: {

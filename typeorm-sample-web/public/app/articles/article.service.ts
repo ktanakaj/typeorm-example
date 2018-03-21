@@ -3,7 +3,7 @@
  * @module ./app/articles/article.service
  */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ResponseError } from '../core/response-error';
 import { Article } from './article.model';
 import { Tag } from './tag.model';
@@ -20,7 +20,7 @@ export class ArticleService {
 	 * モジュールをDIしてコンポーネントを生成する。
 	 * @param http HTTPモジュール。
 	 */
-	constructor(private http: Http) { }
+	constructor(private http: HttpClient) { }
 
 	/**
 	 * ブログ記事一覧を取得する。
@@ -31,10 +31,14 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	find(blogId: number, offset: number, limit: number, tag?: string): Promise<{ count: number, list: Article[] }> {
-		return this.http.get('/api/articles/', { params: { blogId, offset, limit, tag } })
+		const params = new HttpParams();
+		params.set('blogId', String(blogId));
+		params.set('offset', String(offset));
+		params.set('limit', String(limit));
+		params.set('tag', String(tag));
+		return this.http.get<{ count: number, list: Article[] }>('/api/articles/', { params })
 			.retry(MAX_RETRY)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -45,10 +49,9 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	findById(id: number): Promise<Article> {
-		return this.http.get('/api/articles/' + id)
+		return this.http.get<Article>('/api/articles/' + id)
 			.retry(MAX_RETRY)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -59,9 +62,8 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	insert(article: Article): Promise<Article> {
-		return this.http.post('/api/articles/', article)
+		return this.http.post<Article>('/api/articles/', article)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -72,9 +74,8 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	update(article: Article): Promise<Article> {
-		return this.http.put('/api/articles/' + article.id, article)
+		return this.http.put<Article>('/api/articles/' + article.id, article)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 
@@ -85,9 +86,8 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	delete(id: number): Promise<Article> {
-		return this.http.delete('/api/articles/' + id)
+		return this.http.delete<Article>('/api/articles/' + id)
 			.toPromise()
-			.then((res) => res.json())
 			.catch(ResponseError.throwError);
 	}
 }
