@@ -3,7 +3,7 @@
  * @module ./services/blog-service
  */
 import { Service } from "typedi";
-import { Repository, FindOptions } from "typeorm";
+import { Repository, FindManyOptions } from "typeorm";
 import { OrmRepository } from "typeorm-typedi-extensions";
 import { BadRequestError, NotFoundError } from "routing-controllers";
 import { Blog } from "../entities/blog";
@@ -27,11 +27,10 @@ export class BlogService {
 	 * @returns ブログ一覧。
 	 */
 	async findAndCount(options: { offset?: number, limit?: number, whereConditions?: {} } = {}): Promise<[Blog[], number]> {
-		const op: FindOptions = {
-			alias: 'blog',
-			whereConditions: options.whereConditions,
-			offset: options.offset || 0,
-			limit: options.limit || Number.MAX_SAFE_INTEGER,
+		const op: FindManyOptions<Blog> = {
+			where: options.whereConditions,
+			skip: options.offset || 0,
+			take: options.limit || Number.MAX_SAFE_INTEGER,
 		};
 		return this.blogRepository.findAndCount(op);
 	}
@@ -59,7 +58,7 @@ export class BlogService {
 		if (count > 0) {
 			throw new BadRequestError(`blog title is already existed`);
 		}
-		return this.blogRepository.persist(blog);
+		return this.blogRepository.save(blog);
 	}
 
 	/**
@@ -72,16 +71,11 @@ export class BlogService {
 		if (!old) {
 			throw new NotFoundError(`blog is not found`);
 		}
-		const op: FindOptions = {
-			alias: "blog",
-			where: "title = :title && id != :id",
-			parameters: { title: blog.title, id: blog.id },
-		};
-		let count = await this.blogRepository.count(op);
-		if (count > 0) {
+		let check = await this.blogRepository.findOne({ title: blog.title });
+		if (check && check.id !== old.id) {
 			throw new BadRequestError(`blog title is already existed`);
 		}
-		return this.blogRepository.persist(Object.assign(old, blog));
+		return this.blogRepository.save(Object.assign(old, blog));
 	}
 
 	/**
@@ -94,7 +88,7 @@ export class BlogService {
 		if (!blog) {
 			throw new NotFoundError(`blog is not found`);
 		}
-		let count = await this.articleRepository.count({ blogId: id });
+		let count = await this.articleRepository.count({ where: { blogId: id } });
 		if (count > 0) {
 			throw new BadRequestError(`blog has articles`);
 		}

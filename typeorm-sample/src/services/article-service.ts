@@ -3,7 +3,7 @@
  * @module ./services/article-service
  */
 import { Service } from "typedi";
-import { Repository, FindOptions } from "typeorm";
+import { Repository, FindManyOptions } from "typeorm";
 import { OrmRepository } from "typeorm-typedi-extensions";
 import { BadRequestError, NotFoundError } from "routing-controllers";
 import { Blog } from "../entities/blog";
@@ -31,17 +31,11 @@ export class ArticleService {
 	 * @returns ブログ記事一覧。
 	 */
 	async findAndCount(options: { offset?: number, limit?: number, whereConditions?: { blog_id?: number, tag?: string } } = {}): Promise<[Article[], number]> {
-		const op: FindOptions = {
-			alias: 'article',
-			whereConditions: options.whereConditions,
-			offset: options.offset || 0,
-			limit: options.limit || Number.MAX_SAFE_INTEGER,
-			innerJoinAndSelect: {
-				"blog": "article.blog",
-			},
-			leftJoinAndSelect: {
-				"tags": "article.tags",
-			},
+		const op: FindManyOptions<Article> = {
+			where: options.whereConditions,
+			skip: options.offset || 0,
+			take: options.limit || Number.MAX_SAFE_INTEGER,
+			relations: ['blog', 'tags'],
 		};
 		return this.articleRepository.findAndCount(op);
 	}
@@ -53,13 +47,7 @@ export class ArticleService {
 	 */
 	async findOneById(id): Promise<Article> {
 		const article = await this.articleRepository.findOneById(id, {
-			alias: 'article',
-			innerJoinAndSelect: {
-				"blog": "article.blog",
-			},
-			leftJoinAndSelect: {
-				"tags": "article.tags",
-			},
+			relations: ['blog', 'tags'],
 		});
 		if (!article) {
 			throw new NotFoundError(`article is not found`);
@@ -78,7 +66,7 @@ export class ArticleService {
 			throw new NotFoundError(`blog is not found`);
 		}
 		article.tags = await this.relateTags(article.tags);
-		return this.articleRepository.persist(article);
+		return this.articleRepository.save(article);
 	}
 
 	/**
@@ -95,7 +83,7 @@ export class ArticleService {
 			throw new BadRequestError(`blog id can't be changed`);
 		}
 		article.tags = await this.relateTags(article.tags);
-		return this.articleRepository.persist(Object.assign(old, article));
+		return this.articleRepository.save(Object.assign(old, article));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 ---
   database:
-    type: "mysql"
+    type: "mariadb"
     host: "localhost"
     port: 3306
     username: "typeorm_usr"
@@ -33,7 +33,7 @@
     swagger: "2.0"
     info:
       title: "typeorm-sample"
-      version: 0.1.0
+      version: 0.2.0
       description: "typeorm-sample API。"
     basePath: "/api"
     consumes:

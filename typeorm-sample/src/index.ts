@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as config from 'config';
 import * as log4js from 'log4js';
 import 'source-map-support/register';
-import { createConnection, useContainer as useContainerForOrm } from "typeorm";
+import { createConnection, useContainer as useContainerForOrm, ConnectionOptions } from "typeorm";
 import { Container } from "typedi";
 import { createExpressServer, useContainer as useContainerForRouting } from "routing-controllers";
 import fileUtils from './core/file-utils';
@@ -18,18 +18,16 @@ log4js.configure(config['log4js']);
 // TypeORM, TypeDIを初期化
 useContainerForOrm(Container);
 useContainerForRouting(Container);
-createConnection({
-	driver: config['database'],
-	logging: {
-		logger: (level, message) => log4js.getLogger('debug').debug(message),
-		logQueries: true,
-		logFailedQueryError: true,
-	},
-	entities: [
-		__dirname + "/entities/{*.ts,*.js}"
-	],
-	autoSchemaSync: true,
-}).then(() => {
+const options = Object.assign({}, config['database']);
+options['logging'] = {
+	logger: (level, message) => log4js.getLogger('debug').debug(message),
+	logQueries: true,
+	logFailedQueryError: true,
+};
+options['entities'] = [
+	__dirname + "/entities/{*.ts,*.js}"
+];
+createConnection(options).then(() => {
 	// Expressサーバー作成
 	const app = createExpressServer({
 		routePrefix: "/api",
