@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: https://rpm.nodesource.com/setup_8.x
+    nodesource: https://rpm.nodesource.com/setup_10.x
     swaggeruisource: https://github.com/swagger-api/swagger-ui/archive/v3.13.0.tar.gz
     swaggeruidest: /var/www/swagger
     app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
@@ -31,7 +31,7 @@
           when: timedatectl_timezone.stdout == ""
       - block:
         - name: Check Node.js repository version
-          shell: yum info nodejs | grep -e "Version\s*:\s*[8-9].*$"
+          shell: yum info nodejs | grep -e "Version\s*:\s*1[0-9].*$"
           register: nodejs_repository_version
           check_mode: no
           changed_when: false

@@ -7,15 +7,15 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
 
 ## Environment
 * CentOS 7
-* Node.js v8.x
+* Node.js v10.x
 * nginx 1.12.x
 * TypeScript 2.x
-* TypeORM 0.1.16
-* TypeDI 0.7.1
+* TypeORM 0.2.5
+* TypeDI 0.7.3
 * routing-controllers 0.7.7
-* Angular 5.x
+* Angular 6.x
     * webpack 4.x
-    * ngx-translate 9.x
+    * ngx-translate 10.x
 * swagger-jsdoc 1.x
 * Mocha 5.x
     * Power-assert 1.x
