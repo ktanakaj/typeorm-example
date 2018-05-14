@@ -2,19 +2,23 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: https://rpm.nodesource.com/setup_10.x
-    swaggeruisource: https://github.com/swagger-api/swagger-ui/archive/v3.13.0.tar.gz
-    swaggeruidest: /var/www/swagger
+    nodesource: "https://rpm.nodesource.com/setup_10.x"
+    mysqlsource: "https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm"
+    swaggeruisource: "https://github.com/swagger-api/swagger-ui/archive/v3.13.0.tar.gz"
+    swaggeruidest: "/var/www/swagger"
+    mysql_client_conf_src: "/vagrant/vagrant-conf/my.cnf.j2"
+    mysql_client_conf_dest: "/root/.my.cnf"
+    mysql_root_password: "r00+PAssw0rd" # Don't use special characters for shell
     app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
-    app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
+    app_nginx_conf_dest: "/etc/nginx/default.d/vagrant.conf"
     app_svr_dir: "/vagrant/typeorm-sample"
     app_web_dir: "/vagrant/typeorm-sample-web"
-    app_log_dir: /var/log/local/typeorm-sample
+    app_log_dir: "/var/log/local/typeorm-sample"
     app_db:
       - typeorm_sample
     app_db_users:
       - user: typeorm_usr
-        password: typeorm001
+        password: "tYPe0rm!01"
         privilege: "typeorm_sample.*:ALL"
     build_target: build
   tasks:
@@ -39,14 +43,16 @@
         - name: Register Node.js repository
           shell: curl --silent --location {{ nodesource }} | bash -
           when: nodejs_repository_version.stdout == ""
+        - name: Register MySQL repository
+          yum: name={{ mysqlsource }}
+          state: present
         - name: Upgrade all packages
           yum: name=* state=latest
         - name: Install the latest version of Node.js
           yum: name=nodejs state=latest
-        - name: Install the latest version of MariaDB
-          yum: name=mariadb state=latest
-        - name: Install the latest version of MariaDB server
-          yum: name=mariadb-server state=latest
+        - name: Install the latest version of MySQL
+          yum: name=mysql-server state=latest
+          register: mysql_installed
         - name: Install the latest version of MySQL-python
           yum: name=MySQL-python state=latest
         - name: Install the latest version of nginx
@@ -71,8 +77,22 @@
         - name: Install "node-pre-gyp" node.js package globally
           npm: name=node-pre-gyp global=yes
       - block:
-        - name: Action to enable service mariadb
-          service: name=mariadb state=started enabled=yes
+        - name: Action to enable service MySQL
+          service: name=mysqld state=started enabled=yes
+        - name: Get MySQL temporary password
+          shell: cat /var/log/mysqld.log | grep "temporary password" | awk '{print $11}'
+          register: mysql_default_password
+          when: mysql_installed.changed
+        - name: Change MySQL root password
+          shell: mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_root_password }}');"
+          when: mysql_installed.changed
+        - name: Set client my.cnf to root
+          template:
+            src: "{{ mysql_client_conf_src }}"
+            dest: "{{ mysql_client_conf_dest }}"
+            owner: root
+            group: root
+          when: mysql_installed.changed
         - name: Copy the web app configuration to nginx
           copy: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=yes
         - name: Action to enable service nginx
@@ -84,7 +104,7 @@
           service: name=firewalld state=started enabled=yes
         - name: Open port for HTTP
           firewalld: service=http permanent=true state=enabled
-        - name: Open port for MariaDB only internal zone
+        - name: Open port for MySQL only internal zone
           firewalld: service=mysql permanent=true state=enabled zone=internal
         - name: Set private ip addresses to internal zone
           firewalld: source='172.16.0.0/12' zone=internal state=enabled

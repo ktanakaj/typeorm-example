@@ -4,7 +4,7 @@
     host: "localhost"
     port: 3306
     username: "typeorm_usr"
-    password: "typeorm001"
+    password: "tYPe0rm!01"
     database: "typeorm_sample"
     synchronize: true
   log4js:
