@@ -149,7 +149,7 @@ export class BlogController {
 	 *               description: 総件数
 	 */
 	@Get("/")
-	getAll( @QueryParam("offset") offset: number, @QueryParam("limit") limit: number, @QueryParam("blogId") blogId: number, @QueryParam("tag") tag: string): Promise<{ list: Article[], count: number }> {
+	getAll(@QueryParam("offset") offset: number, @QueryParam("limit") limit: number, @QueryParam("blogId") blogId: number, @QueryParam("tag") tag: string): Promise<{ list: Article[], count: number }> {
 		const whereConditions = {};
 		if (blogId) {
 			whereConditions['blogId'] = blogId;
@@ -180,8 +180,8 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Get("/:id")
-	getOne( @Param("id") id: number): Promise<Article> {
-		return this.articleService.findOneById(id);
+	getOne(@Param("id") id: number): Promise<Article> {
+		return this.articleService.findOne(id);
 	}
 
 	/**
@@ -208,7 +208,7 @@ export class BlogController {
 	 *         $ref: '#/responses/BadRequest'
 	 */
 	@Post("/")
-	post( @Body({ required: true }) article: Article): Promise<Article> {
+	post(@Body({ required: true }) article: Article): Promise<Article> {
 		return this.articleService.insert(article);
 	}
 
@@ -239,7 +239,7 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Put("/:id")
-	put( @Param("id") id: number, @Body({ required: true }) article: Article): Promise<Article> {
+	put(@Param("id") id: number, @Body({ required: true }) article: Article): Promise<Article> {
 		article.id = id;
 		return this.articleService.update(article);
 	}
@@ -263,7 +263,7 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Delete("/:id")
-	remove( @Param("id") id: number): Promise<Article> {
+	remove(@Param("id") id: number): Promise<Article> {
 		return this.articleService.delete(id);
 	}
 }

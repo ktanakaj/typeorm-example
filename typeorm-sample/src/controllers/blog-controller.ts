@@ -94,7 +94,7 @@ export class BlogController {
 	 *               description: 総件数
 	 */
 	@Get("/")
-	getAll( @QueryParam("offset") offset: number, @QueryParam("limit") limit: number): Promise<{ list: Blog[], count: number }> {
+	getAll(@QueryParam("offset") offset: number, @QueryParam("limit") limit: number): Promise<{ list: Blog[], count: number }> {
 		return this.blogService.findAndCount({ offset, limit })
 			.then(([list, count]) => { return { list, count }; });
 	}
@@ -118,8 +118,8 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Get("/:id")
-	getOne( @Param("id") id: number): Promise<Blog> {
-		return this.blogService.findOneById(id);
+	getOne(@Param("id") id: number): Promise<Blog> {
+		return this.blogService.findOne(id);
 	}
 
 	/**
@@ -146,7 +146,7 @@ export class BlogController {
 	 *         $ref: '#/responses/BadRequest'
 	 */
 	@Post("/")
-	post( @Body({ required: true }) blog: Blog): Promise<Blog> {
+	post(@Body({ required: true }) blog: Blog): Promise<Blog> {
 		return this.blogService.insert(blog);
 	}
 
@@ -177,7 +177,7 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Put("/:id")
-	put( @Param("id") id: number, @Body({ required: true }) blog: Blog): Promise<Blog> {
+	put(@Param("id") id: number, @Body({ required: true }) blog: Blog): Promise<Blog> {
 		blog.id = id;
 		return this.blogService.update(blog);
 	}
@@ -201,7 +201,7 @@ export class BlogController {
 	 *         $ref: '#/responses/NotFound'
 	 */
 	@Delete("/:id")
-	remove( @Param("id") id: number): Promise<Blog> {
+	remove(@Param("id") id: number): Promise<Blog> {
 		return this.blogService.delete(id);
 	}
 }

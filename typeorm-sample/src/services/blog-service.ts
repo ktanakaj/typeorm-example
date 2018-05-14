@@ -40,8 +40,8 @@ export class BlogService {
 	 * @param id ブログID。
 	 * @returns ブログ。
 	 */
-	async findOneById(id): Promise<Blog> {
-		const blog = await this.blogRepository.findOneById(id);
+	async findOne(id): Promise<Blog> {
+		const blog = await this.blogRepository.findOne(id);
 		if (!blog) {
 			throw new NotFoundError(`blog is not found`);
 		}
@@ -67,7 +67,7 @@ export class BlogService {
 	 * @returns 更新したブログ。
 	 */
 	async update(blog: Blog): Promise<Blog> {
-		const old = await this.blogRepository.findOneById(blog.id);
+		const old = await this.blogRepository.findOne(blog.id);
 		if (!old) {
 			throw new NotFoundError(`blog is not found`);
 		}
@@ -84,7 +84,7 @@ export class BlogService {
 	 * @returns 削除したブログ。
 	 */
 	async delete(id: number): Promise<Blog> {
-		const blog = await this.blogRepository.findOneById(id);
+		const blog = await this.blogRepository.findOne(id);
 		if (!blog) {
 			throw new NotFoundError(`blog is not found`);
 		}

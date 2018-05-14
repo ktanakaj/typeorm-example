@@ -2,9 +2,9 @@
  * ブログ記事サービスモジュール。
  * @module ./app/articles/article.service
  */
+import 'rxjs/add/operator/retry';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { ResponseError } from '../core/response-error';
 import { Article } from './article.model';
 import { Tag } from './tag.model';
 
@@ -38,8 +38,7 @@ export class ArticleService {
 		params.set('tag', String(tag));
 		return this.http.get<{ count: number, list: Article[] }>('/api/articles/', { params })
 			.retry(MAX_RETRY)
-			.toPromise()
-			.catch(ResponseError.throwError);
+			.toPromise();
 	}
 
 	/**
@@ -51,8 +50,7 @@ export class ArticleService {
 	findById(id: number): Promise<Article> {
 		return this.http.get<Article>('/api/articles/' + id)
 			.retry(MAX_RETRY)
-			.toPromise()
-			.catch(ResponseError.throwError);
+			.toPromise();
 	}
 
 	/**
@@ -63,8 +61,7 @@ export class ArticleService {
 	 */
 	insert(article: Article): Promise<Article> {
 		return this.http.post<Article>('/api/articles/', article)
-			.toPromise()
-			.catch(ResponseError.throwError);
+			.toPromise();
 	}
 
 	/**
@@ -75,8 +72,7 @@ export class ArticleService {
 	 */
 	update(article: Article): Promise<Article> {
 		return this.http.put<Article>('/api/articles/' + article.id, article)
-			.toPromise()
-			.catch(ResponseError.throwError);
+			.toPromise();
 	}
 
 	/**
@@ -87,7 +83,6 @@ export class ArticleService {
 	 */
 	delete(id: number): Promise<Article> {
 		return this.http.delete<Article>('/api/articles/' + id)
-			.toPromise()
-			.catch(ResponseError.throwError);
+			.toPromise();
 	}
 }

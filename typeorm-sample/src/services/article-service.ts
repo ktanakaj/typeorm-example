@@ -45,8 +45,8 @@ export class ArticleService {
 	 * @param id ブログ記事ID。
 	 * @returns ブログ記事。
 	 */
-	async findOneById(id): Promise<Article> {
-		const article = await this.articleRepository.findOneById(id, {
+	async findOne(id): Promise<Article> {
+		const article = await this.articleRepository.findOne(id, {
 			relations: ['blog', 'tags'],
 		});
 		if (!article) {
@@ -61,7 +61,7 @@ export class ArticleService {
 	 * @returns 作成後のブログ記事。
 	 */
 	async insert(article: Article): Promise<Article> {
-		const blog = await this.blogRepository.findOneById(article.blog.id);
+		const blog = await this.blogRepository.findOne(article.blog.id);
 		if (!blog) {
 			throw new NotFoundError(`blog is not found`);
 		}
@@ -75,7 +75,7 @@ export class ArticleService {
 	 * @returns 更新したブログ記事。
 	 */
 	async update(article: Article): Promise<Article> {
-		const old = await this.findOneById(article.id);
+		const old = await this.findOne(article.id);
 		if (!old) {
 			throw new NotFoundError(`article is not found`);
 		}
@@ -92,7 +92,7 @@ export class ArticleService {
 	 * @returns 削除したブログ記事。
 	 */
 	async delete(id: number): Promise<Article> {
-		const article = await this.findOneById(id);
+		const article = await this.findOne(id);
 		if (!article) {
 			throw new NotFoundError(`article is not found`);
 		}

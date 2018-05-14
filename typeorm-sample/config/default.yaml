@@ -6,6 +6,7 @@
     username: "typeorm_usr"
     password: "typeorm001"
     database: "typeorm_sample"
+    synchronize: true
   log4js:
     appenders:
       - type: "datefile"

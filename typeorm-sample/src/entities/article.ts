@@ -43,7 +43,7 @@ export class Article {
 
 	/** 記事のタグ */
 	@ManyToMany(type => Tag, {
-		cascadeInsert: true,
+		cascade: ["insert"],
 	})
 	@JoinTable()
 	tags: Tag[];
