@@ -31,11 +31,13 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	find(blogId: number, offset: number, limit: number, tag?: string): Promise<{ count: number, list: Article[] }> {
-		const params = new HttpParams();
-		params.set('blogId', String(blogId));
-		params.set('offset', String(offset));
-		params.set('limit', String(limit));
-		params.set('tag', String(tag));
+		let params = new HttpParams()
+			.set('blogId', String(blogId))
+			.set('offset', String(offset))
+			.set('limit', String(limit));
+		if (tag !== undefined && tag !== null && tag !== '') {
+			params = params.set('tag', String(tag));
+		}
 		return this.http.get<{ count: number, list: Article[] }>('/api/articles/', { params })
 			.retry(MAX_RETRY)
 			.toPromise();

@@ -29,9 +29,9 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	find(offset: number, limit: number): Promise<{ count: number, list: Blog[] }> {
-		const params = new HttpParams();
-		params.set('offset', String(offset));
-		params.set('limit', String(limit));
+		const params = new HttpParams()
+			.set('offset', String(offset))
+			.set('limit', String(limit));
 		return this.http.get<{ count: number, list: Blog[] }>('/api/blogs/', { params })
 			.retry(MAX_RETRY)
 			.toPromise();
