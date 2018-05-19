@@ -107,7 +107,7 @@
         - name: Open port for MySQL only internal zone
           firewalld: service=mysql permanent=true state=enabled zone=internal
         - name: Set private ip addresses to internal zone
-          firewalld: source='172.16.0.0/12' zone=internal state=enabled
+          firewalld: source='172.16.0.0/12' permanent=true zone=internal state=enabled
         - name: Action to reload service firewalld
           service: name=firewalld state=reloaded enabled=yes
       - block:
