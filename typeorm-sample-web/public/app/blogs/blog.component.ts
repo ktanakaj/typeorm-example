@@ -115,7 +115,7 @@ export class BlogComponent implements OnInit {
 
 	/**
 	 * 削除確認ダイアログを開く。
-	 * @param id ブログID。 
+	 * @param id ブログID。
 	 * @returns 処理状態。
 	 */
 	async confirmDelete(id: number): Promise<void> {

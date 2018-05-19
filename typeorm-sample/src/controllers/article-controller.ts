@@ -4,8 +4,8 @@
  */
 import { JsonController, Param, Body, Get, Post, Put, Delete, QueryParam } from "routing-controllers";
 import { Inject } from "typedi";
-import { Article } from "../entities/article"
-import { ArticleService } from "../services/article-service"
+import { Article } from "../entities/article";
+import { ArticleService } from "../services/article-service";
 
 /**
  * @swagger

@@ -39,8 +39,8 @@ export class ArticleService {
 			where['blog'] = { id: blogId };
 		}
 		if (tag) {
-			//FIXME: It't not working in typeorm 0.2.6
-			//where['tags'] = [{ tag }];
+			// FIXME: It't not working in typeorm 0.2.6
+			// where['tags'] = [{ tag }];
 		}
 		const op: FindManyOptions<Article> = { where, skip, take, relations: ['blog', 'tags'] };
 		return this.articleRepository.findAndCount(op);
@@ -85,7 +85,7 @@ export class ArticleService {
 		if (!old) {
 			throw new NotFoundError(`article is not found`);
 		}
-		if (article.blog.id != old.blog.id) {
+		if (article.blog.id !== old.blog.id) {
 			throw new BadRequestError(`blog id can't be changed`);
 		}
 		article.tags = await this.relateTags(article.tags);
