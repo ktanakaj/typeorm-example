@@ -3,6 +3,7 @@
  * @module ./app/blogs/blog.component
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Blog } from './blog.model';
 import { BlogService } from './blog.service';
@@ -96,7 +97,11 @@ export class BlogComponent implements OnInit {
 			await this.loadPage(this.currentPage);
 			this.closeForm();
 		} catch (e) {
-			this.error = e.message || e;
+			if (e instanceof HttpErrorResponse) {
+				this.error = e.error.message;
+			} else {
+				this.error = e.message || e;
+			}
 		}
 	}
 
@@ -130,7 +135,11 @@ export class BlogComponent implements OnInit {
 			await this.loadPage(this.currentPage);
 			this.closeDelete();
 		} catch (e) {
-			this.error = e.message || e;
+			if (e instanceof HttpErrorResponse) {
+				this.error = e.error.message;
+			} else {
+				this.error = e.message || e;
+			}
 		}
 	}
 

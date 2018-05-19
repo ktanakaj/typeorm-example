@@ -2,8 +2,10 @@
  * ブログ記事ページコンポーネント。
  * @module ./app/articles/article.component
  */
+import 'rxjs/add/operator/filter';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Blog } from '../blogs/blog.model';
 import { Article } from './article.model';
@@ -50,7 +52,6 @@ export class ArticleComponent implements OnInit {
 	 * @param articleService ブログ記事サービス。
 	 */
 	constructor(
-		private router: Router,
 		private route: ActivatedRoute,
 		private blogService: BlogService,
 		private articleService: ArticleService) { }
@@ -58,12 +59,13 @@ export class ArticleComponent implements OnInit {
 	/**
 	 * コンポーネント起動時の処理。
 	 */
-	ngOnInit(): void {
-		this.router.events.subscribe(async () => {
-			this.blog = await this.blogService.findById(this.route.snapshot.params['blogId']);
-			this.tag = this.route.snapshot.queryParams["tag"];
-			return await this.loadPage(this.currentPage);
-		});
+	async ngOnInit(): Promise<void> {
+		this.blog = await this.blogService.findById(this.route.snapshot.params['blogId']);
+		this.route.queryParamMap
+			.subscribe(async () => {
+				this.tag = this.route.snapshot.queryParams["tag"];
+				return await this.loadPage(this.currentPage);
+			});
 	}
 
 	/**
@@ -117,7 +119,11 @@ export class ArticleComponent implements OnInit {
 			await this.loadPage(this.currentPage);
 			this.closeForm();
 		} catch (e) {
-			this.error = e.message || e;
+			if (e instanceof HttpErrorResponse) {
+				this.error = e.error.message;
+			} else {
+				this.error = e.message || e;
+			}
 		}
 	}
 
@@ -175,7 +181,11 @@ export class ArticleComponent implements OnInit {
 			await this.loadPage(this.currentPage);
 			this.closeDelete();
 		} catch (e) {
-			this.error = e.message || e;
+			if (e instanceof HttpErrorResponse) {
+				this.error = e.error.message;
+			} else {
+				this.error = e.message || e;
+			}
 		}
 	}
 

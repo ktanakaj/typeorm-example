@@ -27,16 +27,22 @@ export class ArticleService {
 
 	/**
 	 * ブログ記事一覧を取得する。
-	 * @param options 検索条件。
+	 * @param skip 検索開始位置。未指定時は0。
+	 * @param take 検索件数。未指定時は制限なし。
+	 * @param blogId ブログIDで絞り込む場合そのID。
+	 * @param tag タグで絞り込む場合そのタグ。
 	 * @returns ブログ記事一覧。
 	 */
-	async findAndCount(options: { offset?: number, limit?: number, whereConditions?: { blog_id?: number, tag?: string } } = {}): Promise<[Article[], number]> {
-		const op: FindManyOptions<Article> = {
-			where: options.whereConditions,
-			skip: options.offset || 0,
-			take: options.limit || Number.MAX_SAFE_INTEGER,
-			relations: ['blog', 'tags'],
-		};
+	async findAndCount(skip: number = 0, take: number = Number.MAX_SAFE_INTEGER, blogId: number = null, tag: string = null): Promise<[Article[], number]> {
+		const where = {};
+		if (blogId) {
+			where['blog'] = { id: blogId };
+		}
+		if (tag) {
+			//FIXME: It't not working in typeorm 0.2.6
+			//where['tags'] = [{ tag }];
+		}
+		const op: FindManyOptions<Article> = { where, skip, take, relations: ['blog', 'tags'] };
 		return this.articleRepository.findAndCount(op);
 	}
 

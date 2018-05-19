@@ -150,14 +150,7 @@ export class BlogController {
 	 */
 	@Get("/")
 	getAll(@QueryParam("offset") offset: number, @QueryParam("limit") limit: number, @QueryParam("blogId") blogId: number, @QueryParam("tag") tag: string): Promise<{ list: Article[], count: number }> {
-		const whereConditions = {};
-		if (blogId) {
-			whereConditions['blogId'] = blogId;
-		}
-		if (tag) {
-			whereConditions['tags.tag'] = tag;
-		}
-		return this.articleService.findAndCount({ offset, limit, whereConditions })
+		return this.articleService.findAndCount(offset, limit, blogId, tag)
 			.then(([list, count]) => { return { list, count }; });
 	}
 

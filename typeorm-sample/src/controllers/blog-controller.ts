@@ -95,7 +95,7 @@ export class BlogController {
 	 */
 	@Get("/")
 	getAll(@QueryParam("offset") offset: number, @QueryParam("limit") limit: number): Promise<{ list: Blog[], count: number }> {
-		return this.blogService.findAndCount({ offset, limit })
+		return this.blogService.findAndCount(offset, limit)
 			.then(([list, count]) => { return { list, count }; });
 	}
 

@@ -19,11 +19,7 @@ log4js.configure(config['log4js']);
 useContainerForOrm(Container);
 useContainerForRouting(Container);
 const options = Object.assign({}, config['database']);
-options['logging'] = {
-	logger: (level, message) => log4js.getLogger('debug').debug(message),
-	logQueries: true,
-	logFailedQueryError: true,
-};
+options['logging'] = ['query', 'error'];
 options['entities'] = [
 	__dirname + "/entities/{*.ts,*.js}"
 ];

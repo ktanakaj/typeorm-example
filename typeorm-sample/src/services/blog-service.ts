@@ -23,15 +23,12 @@ export class BlogService {
 
 	/**
 	 * ブログ一覧を取得する。
-	 * @param options 検索条件。
+	 * @param skip 検索開始位置。未指定時は0。
+	 * @param take 検索件数。未指定時は制限なし。
 	 * @returns ブログ一覧。
 	 */
-	async findAndCount(options: { offset?: number, limit?: number, whereConditions?: {} } = {}): Promise<[Blog[], number]> {
-		const op: FindManyOptions<Blog> = {
-			where: options.whereConditions,
-			skip: options.offset || 0,
-			take: options.limit || Number.MAX_SAFE_INTEGER,
-		};
+	async findAndCount(skip: number = 0, take: number = Number.MAX_SAFE_INTEGER): Promise<[Blog[], number]> {
+		const op: FindManyOptions<Blog> = { skip, take };
 		return this.blogRepository.findAndCount(op);
 	}
 
