@@ -11,7 +11,7 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
 * nginx 1.12.x
 * MySQL 5.7
 * TypeScript 2.x
-* TypeORM 0.2.5
+* TypeORM 0.2.6
 * TypeDI 0.7.3
 * routing-controllers 0.7.7
 * Angular 6.x
