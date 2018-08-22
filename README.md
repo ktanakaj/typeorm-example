@@ -7,7 +7,7 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
 
 ## Environment
 * CentOS 7
-* Node.js v10.x
+* Node.js v8.x
 * nginx 1.12.x
 * MySQL 5.7
 * TypeScript 2.x

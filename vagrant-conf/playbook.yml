@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: "https://rpm.nodesource.com/setup_10.x"
+    nodesource: "https://rpm.nodesource.com/setup_8.x" # TODO: https://github.com/npm/npm/issues/20605 が直ったら10に上げる
     mysqlsource: "https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm"
     swaggeruisource: "https://github.com/swagger-api/swagger-ui/archive/v3.13.0.tar.gz"
     swaggeruidest: "/var/www/swagger"
@@ -35,7 +35,7 @@
           when: timedatectl_timezone.stdout == ""
       - block:
         - name: Check Node.js repository version
-          shell: yum info nodejs | grep -e "Version\s*:\s*1[0-9].*$"
+          shell: yum info nodejs | grep -e "Version\s*:\s*(1[0-9]|[8-9]).*$"
           register: nodejs_repository_version
           check_mode: no
           changed_when: false
