@@ -7,14 +7,14 @@
     "production": "pm2 start process.json --env production",
     "restart": "pm2 restart process.json",
     "stop": "pm2 stop process.json",
-    "build": "npm run clean-app && tsc --outDir ./lib",
-    "watch": "npm run clean-app && tsc --watch --outDir ./lib",
-    "test": "NODE_ENV=test mocha --require espower-typescript/guess \"./src/test/**/*.ts\"",
-    "doc": "npm run clean-doc && typedoc ./src --exclude /**/test/**/*.ts --out ./out --mode file",
+    "build": "npm run clean-app && tsc --outDir ./dist",
+    "watch": "npm run clean-app && tsc --watch --outDir ./dist",
+    "test": "NODE_ENV=test mocha --require espower-typescript/guess \"./test/**/*.ts\"",
+    "doc": "npm run clean-doc && typedoc ./src --out ./doc --mode file --ignoreCompilerErrors",
     "clean": "npm run clean-app & npm run clean-doc",
-    "clean-app": "rm -rf ./lib",
-    "clean-doc": "rm -rf ./out",
-    "tslint": "tslint \"./src/**/*.ts\""
+    "clean-app": "rm -rf ./dist",
+    "clean-doc": "rm -rf ./doc",
+    "lint": "tslint \"./src/**/*.ts\" \"./test/**/*.ts\""
   },
   "engines": {
     "node": ">=8.11.4"

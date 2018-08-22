@@ -1,8 +1,9 @@
 {
   "apps": [{
     "name": "typeorm-sample",
-    "script": "./lib/index.js",
+    "script": "./dist/index.js",
     "watch": true,
+    "ignore_watch": ["node_modules", "src", "test", "doc"],
     "watch_options": {"usePolling": true},
     "env": {
       "NODE_ENV": "development"

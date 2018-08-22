@@ -6,11 +6,11 @@
     "build": "npm run clean-app && webpack",
     "watch": "npm run clean-app && webpack --watch --devtool source-map",
     "test": "NODE_ENV=test mocha --require espower-typescript/guess \"./test/**/*.ts\"",
-    "doc": "npm run clean-doc && typedoc ./public/app --exclude /**/test/**/*.ts --ignoreCompilerErrors --out ./out --mode file",
+    "doc": "npm run clean-doc && typedoc ./public/app --exclude /**/test/**/*.ts --ignoreCompilerErrors --out ./doc --mode file",
     "clean": "npm run clean-app & npm run clean-doc",
     "clean-app": "rm -f ./public/bundle.js ./public/bundle.js.map",
-    "clean-doc": "rm -rf ./out",
-    "tslint": "tslint \"./public/app/**/*.ts\" \"./test/**/*.ts\""
+    "clean-doc": "rm -rf ./doc",
+    "lint": "tslint \"./public/app/**/*.ts\" \"./test/**/*.ts\""
   },
   "license": "MIT",
   "dependencies": {

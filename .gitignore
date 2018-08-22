@@ -17,12 +17,12 @@ node_modules
 Temp
 Obj
 doc/*.mwb.*
-typeorm-sample/lib
-typeorm-sample/out
+typeorm-sample/dist
+typeorm-sample/doc
 typeorm-sample/config/local.yaml
 typeorm-sample-web/public/bundle.js
 typeorm-sample-web/public/bundle.js.map
-typeorm-sample-web/out
+typeorm-sample-web/doc
 typeorm-sample-web/obj
 typeorm-sample-web/bin
 !.gitkeep

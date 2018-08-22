@@ -22,8 +22,8 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
     * Power-assert 1.x
 
 ### Development environment
-* Vagrant 2.0.x - Virtual machine management
-    * VirtualBox 5.1.x - Virtual machine
+* Vagrant 2.1.x - Virtual machine management
+    * VirtualBox 5.2.x - Virtual machine
     * vagrant-vbguest - Vagrant plug-in
 * Visual Studio Code - Editor
 
@@ -32,7 +32,7 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
     * typeorm-sample - Node.js server application
         * config - Application configuration
     * typeorm-sample-web - Angular web application
-    * vagrant-conf - Vagrant configuration
+    * ansible - Ansible configuration
 
 ## Installation
 1. Install Vagrant and the plug-in, and copy this repository to your computer.
@@ -74,7 +74,7 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
     * `npm run watch` - build the application with watch / アプリのビルド（ファイル更新監視）
     * `npm run doc` - generate TypeDoc / アプリのAPIドキュメント生成
     * `npm test` - run unit test / アプリのユニットテスト実行
-    * `npm run tslint` - run tslint / アプリの静的解析ツールの実行
+    * `npm run lint` - run tslint / アプリの静的解析ツールの実行
     * `npm run clean` - clrean all output / 全ビルド生成物の削除
 
 ## Note

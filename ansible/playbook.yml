@@ -4,12 +4,12 @@
     timezone: "Asia/Tokyo"
     nodesource: "https://rpm.nodesource.com/setup_8.x" # TODO: https://github.com/npm/npm/issues/20605 が直ったら10に上げる
     mysqlsource: "https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm"
-    swaggeruisource: "https://github.com/swagger-api/swagger-ui/archive/v3.13.0.tar.gz"
+    swaggeruisource: "https://github.com/swagger-api/swagger-ui/archive/v3.17.6.tar.gz"
     swaggeruidest: "/var/www/swagger"
-    mysql_client_conf_src: "/vagrant/vagrant-conf/my.cnf.j2"
+    mysql_client_conf_src: "/vagrant/ansible/my.cnf.j2"
     mysql_client_conf_dest: "/root/.my.cnf"
     mysql_root_password: "r00+PAssw0rd" # Don't use special characters for shell
-    app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
+    app_nginx_conf_src: "/vagrant/ansible/nginx.conf.j2"
     app_nginx_conf_dest: "/etc/nginx/default.d/vagrant.conf"
     app_svr_dir: "/vagrant/typeorm-sample"
     app_web_dir: "/vagrant/typeorm-sample-web"
@@ -94,7 +94,7 @@
             group: root
           when: mysql_installed.changed
         - name: Copy the web app configuration to nginx
-          copy: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=yes
+          template: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=yes
         - name: Action to enable service nginx
           service: name=nginx state=restarted enabled=yes
       - block:
@@ -112,7 +112,7 @@
           service: name=firewalld state=reloaded enabled=yes
       - block:
         - name: Create the web application logging directory
-          file: path={{ app_log_dir }} state=directory owner=root group=root mode=1777
+          file: path={{ app_log_dir }} state=directory owner=vagrant group=vagrant mode=0755
         - name: Create the web application database
           mysql_db: name={{ item }} encoding=utf8 state=present
           with_items: "{{ app_db }}"
@@ -133,6 +133,10 @@
           when: pm2_service_loaded.stdout == ""
         - name: Action to enable service pm2
           service: name=pm2-vagrant state=started enabled=yes
+        - name: Install "pm2-intercom" module to pm2
+          shell: pm2 install pm2-intercom
+          when: pm2_service_loaded.stdout == ""
+          become: false
       - block:
         - name: Create Swagger-UI directory
           file: path={{ swaggeruidest }} state=directory owner=root group=root mode=0755
