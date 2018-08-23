@@ -1,6 +1,6 @@
 ---
   database:
-    type: "mariadb"
+    type: "mysql"
     host: "localhost"
     port: 3306
     username: "typeorm_usr"
@@ -8,33 +8,48 @@
     database: "typeorm_sample"
     synchronize: true
   log4js:
+    pm2: true
     appenders:
-      - type: "datefile"
-        category: "access" # アクセスログ
+      stdout: # 標準出力
+        type: 'console'
+      stderr: # 標準エラー出力
+        type: 'stderr'
+      access: # アクセスログ
+        type: "dateFile"
         filename: "/var/log/local/typeorm-sample/access.log"
         pattern: "-yyyy-MM-dd"
         backups: 10
-      - type: "datefile"
-        category: "error" # エラーログ
+      error: # エラーログ
+        type: "dateFile"
         filename: "/var/log/local/typeorm-sample/error.log"
         pattern: "-yyyy-MM-dd"
         maxLogSize: 107374182400 # 100MB
-      - type: "file"
-        category: "debug" # デバッグログ
+      debug: # デバッグログ
+        type: "file"
         filename: "/var/log/local/typeorm-sample/debug.log"
         backups: 10
         maxLogSize: 10737418240 # 10MB
-      - type: "console" # コンソール
-    levels:
-      access: "INFO"
-      error: "INFO"
-      debug: "DEBUG"
-    replaceConsole: true
+    categories:
+      default:
+        appenders:
+          - 'stdout'
+          - 'debug'
+        level: 'debug'
+      access:
+        appenders:
+          - 'stdout'
+          - 'access'
+        level: 'info'
+      error:
+        appenders:
+          - 'stderr'
+          - 'error'
+        level: 'info'
   swagger:
     swagger: "2.0"
     info:
       title: "typeorm-sample"
-      version: 0.2.0
+      version: 0.2.1
       description: "typeorm-sample API。"
     basePath: "/api"
     consumes:

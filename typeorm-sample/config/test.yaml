@@ -1,15 +1,20 @@
 ---
   log4js:
     appenders:
-      - type: "console"
-        category: "access" # アクセスログ
-      - type: "console"
-        category: "error" # エラーログ
-      - type: "console"
-        category: "debug" # デバッグログ
-      - type: "console" # コンソール
-    levels:
-      access: "INFO"
-      error: "INFO"
-      debug: "INFO"
-    replaceConsole: false
+      stdout: # 標準出力
+        type: 'console'
+      stderr: # 標準エラー出力
+        type: 'stderr'
+    categories:
+      default:
+        appenders:
+          - 'stdout'
+        level: 'info'
+      access:
+        appenders:
+          - 'stdout'
+        level: 'info'
+      error:
+        appenders:
+          - 'stderr'
+        level: 'info'
