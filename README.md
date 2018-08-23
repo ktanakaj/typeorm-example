@@ -10,9 +10,9 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
 * Node.js v8.x
 * nginx 1.12.x
 * MySQL 5.7
-* TypeScript 2.x
-* TypeORM 0.2.6
-* TypeDI 0.7.3
+* TypeScript 3.x
+* TypeORM 0.2.7
+* TypeDI 0.8.0
 * routing-controllers 0.7.7
 * Angular 6.x
     * webpack 4.x
