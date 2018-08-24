@@ -1,4 +1,8 @@
 ---
+  database:
+    type: "sqlite"
+    database: ":memory:"
+    synchronize: true
   log4js:
     appenders:
       stdout: # 標準出力

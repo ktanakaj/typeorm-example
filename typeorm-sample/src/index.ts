@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as config from 'config';
 import * as log4js from 'log4js';
 import 'source-map-support/register';
-import { createConnection, useContainer as useContainerForOrm, ConnectionOptions } from "typeorm";
+import { createConnection, useContainer as useContainerForOrm } from "typeorm";
 import { Container } from "typedi";
 import { createExpressServer, useContainer as useContainerForRouting } from "routing-controllers";
 import fileUtils from './core/file-utils';

@@ -60,6 +60,11 @@
         - name: Install the latest version of Git
           yum: name=git state=latest
       - block:
+        - name: Install "pm2" node.js package globally
+          npm: name=pm2 global=yes
+        - name: Install "node-pre-gyp" node.js package globally for sqlite3
+          npm: name=node-pre-gyp global=yes
+      - block:
         - name: Action to enable service MySQL
           service: name=mysqld state=started enabled=yes
         - name: Get MySQL temporary password
@@ -105,8 +110,6 @@
             - [ 'localhost', '%' ]
             - "{{ app_db_users }}"
       - block:
-        - name: Install "pm2" node.js package globally
-          npm: name=pm2 global=yes
         - name: Check "pm2" service registration
           shell: systemctl status pm2-vagrant.service | grep -e "enabled"
           register: pm2_service_loaded
