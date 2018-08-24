@@ -55,7 +55,7 @@ function requireDirectoriesRecursiveSync(root: string): Object {
  * @param root 実行元パス。
  * @returns pathをキー、require結果を値とするオブジェクト。
  */
-function requireDirectoriesWalkSync(root: string): Object {
+function requireDirectoriesSync(root: string): Object {
 	const map = {};
 	directoryWalkSync(root, (path) => {
 		if (/\.[jt]s$/.test(path)) {
@@ -66,8 +66,8 @@ function requireDirectoriesWalkSync(root: string): Object {
 }
 
 export default {
-	directoryWalkRecursiveSync: directoryWalkRecursiveSync,
-	directoryWalkSync: directoryWalkSync,
-	requireDirectoriesRecursiveSync: requireDirectoriesRecursiveSync,
-	requireDirectoriesWalkSync: requireDirectoriesWalkSync,
+	directoryWalkRecursiveSync,
+	directoryWalkSync,
+	requireDirectoriesRecursiveSync,
+	requireDirectoriesSync,
 };
