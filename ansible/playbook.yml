@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: "https://rpm.nodesource.com/setup_8.x" # TODO: https://github.com/npm/npm/issues/20605 が直ったら10に上げる
+    nodesource: "https://rpm.nodesource.com/setup_10.x"
     mysqlsource: "https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm"
     swaggeruisource: "https://github.com/swagger-api/swagger-ui/archive/v3.17.6.tar.gz"
     swaggeruidest: "/var/www/swagger"
@@ -35,7 +35,7 @@
           when: timedatectl_timezone.stdout == ""
       - block:
         - name: Check Node.js repository version
-          shell: yum info nodejs | grep -e "Version\s*:\s*(1[0-9]|[8-9]).*$"
+          shell: yum info nodejs | grep -e "Version\s*:\s*1[0-9].*$"
           register: nodejs_repository_version
           check_mode: no
           changed_when: false
@@ -44,8 +44,7 @@
           shell: curl --silent --location {{ nodesource }} | bash -
           when: nodejs_repository_version.stdout == ""
         - name: Register MySQL repository
-          yum: name={{ mysqlsource }}
-          state: present
+          yum: name={{ mysqlsource }} state=present
         - name: Upgrade all packages
           yum: name=* state=latest
         - name: Install the latest version of Node.js
@@ -60,6 +59,8 @@
         - name: Install the latest version of Git
           yum: name=git state=latest
       - block:
+        - name: Install "yarn" node.js package globally
+          npm: name=yarn global=yes
         - name: Install "pm2" node.js package globally
           npm: name=pm2 global=yes
         - name: Install "node-pre-gyp" node.js package globally for sqlite3
@@ -137,9 +138,11 @@
     - block:
       - block:
         - name: Install node.js package for the server application
-          npm: path={{ app_svr_dir }} executable="npm --no-bin-links"
+          shell: yarn install chdir={{ app_svr_dir }} --no-bin-links
+          retries: 2
         - name: Install node.js package for the client application
-          npm: path={{ app_web_dir }} executable="npm --no-bin-links"
+          shell: yarn install chdir={{ app_web_dir }} --no-bin-links
+          retries: 2
         - name: Build the server application
           shell: npm run {{ build_target }} chdir={{ app_svr_dir }}
         - name: Build the client application
