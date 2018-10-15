@@ -1,6 +1,6 @@
 {
   "name": "typeorm-sample-web",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "build": "npm run clean-app && ./node_modules/webpack/bin/webpack.js",
