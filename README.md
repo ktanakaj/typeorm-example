@@ -1,6 +1,6 @@
-typeorm-sample
+typeorm-example
 ===============
-This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) + [TypeDI](https://github.com/pleerock/typedi) + [routing-controllers](https://github.com/pleerock/routing-controllers) + [Angular](https://angular.io/).
+This is a example application for [TypeORM](https://github.com/typeorm/typeorm) + [TypeDI](https://github.com/pleerock/typedi) + [routing-controllers](https://github.com/pleerock/routing-controllers) + [Angular](https://angular.io/).
 
 [TypeORM](https://github.com/typeorm/typeorm) + [TypeDI](https://github.com/pleerock/typedi) + [routing-controllers](https://github.com/pleerock/routing-controllers) + [Angular](https://angular.io/) を使ったWebアプリのサンプルです。  
 ※ テーブル構成などはブログをイメージしていますが、最終的にブログっぽくはないです。管理画面的です。
@@ -29,9 +29,9 @@ This is a sample application for [TypeORM](https://github.com/typeorm/typeorm) +
 
 ## Directory structure
 * VM root
-    * typeorm-sample - Node.js server application
+    * typeorm-example - Node.js server application
         * config - Application configuration
-    * typeorm-sample-web - Angular web application
+    * typeorm-example-web - Angular web application
     * ansible - Ansible configuration
 
 ## Installation
@@ -59,17 +59,17 @@ WebアプリはVM起動時に自動的に立ち上がります。
 
 ### Commands
 You can use some commands for the applications.
-Please use the commands in `typeorm-sample`, `typeorm-sample-web` directories.
+Please use the commands in `typeorm-example`, `typeorm-example-web` directories.
 
 Webアプリの操作用に、以下のようなサーバーコマンドを用意しています。
-アプリのビルドや再起動などを行う場合は、VMにログインして `typeorm-sample`, `typeorm-sample-web` ディレクトリでコマンドを実行してください。
+アプリのビルドや再起動などを行う場合は、VMにログインして `typeorm-example`, `typeorm-example-web` ディレクトリでコマンドを実行してください。
 
-* `typeorm-sample`
+* `typeorm-example`
     * `npm start` - start the application / アプリの起動
         * `npm run production` - start the application as production mode / アプリの起動（運用モード）
     * `npm restart` - restart the application / アプリの再起動
     * `npm stop` - stop the application / アプリの停止
-* `typeorm-sample/typeorm-sample-web`
+* `typeorm-example/typeorm-example-web`
     * `npm run build` - build the application / アプリのビルド
     * `npm run watch` - build the application with watch / アプリのビルド（ファイル更新監視）
     * `npm run doc` - generate TypeDoc / アプリのAPIドキュメント生成
@@ -78,11 +78,11 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
     * `npm run clean` - clrean all output / 全ビルド生成物の削除
 
 ## Note
-The server application output some logs to `/var/log/local/typeorm-sample`.
+The server application output some logs to `/var/log/local/typeorm-example`.
 There are an access log, debug log, error log.
 
-各種ログは `/var/log/local/typeorm-sample` 下に出力されます。
+各種ログは `/var/log/local/typeorm-example` 下に出力されます。
 アクセスログ、デバッグログ、エラーログを出力します。
 
 ## License
-[MIT](https://github.com/ktanakaj/typeorm-sample/blob/master/LICENSE)
+[MIT](https://github.com/ktanakaj/typeorm-example/blob/master/LICENSE)

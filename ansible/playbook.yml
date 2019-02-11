@@ -11,15 +11,15 @@
     mysql_root_password: "r00+PAssw0rd" # Don't use special characters for shell
     app_nginx_conf_src: "/vagrant/ansible/nginx.conf.j2"
     app_nginx_conf_dest: "/etc/nginx/default.d/vagrant.conf"
-    app_svr_dir: "/vagrant/typeorm-sample"
-    app_web_dir: "/vagrant/typeorm-sample-web"
-    app_log_dir: "/var/log/local/typeorm-sample"
+    app_svr_dir: "/vagrant/typeorm-example"
+    app_web_dir: "/vagrant/typeorm-example-web"
+    app_log_dir: "/var/log/local/typeorm-example"
     app_db:
-      - typeorm_sample
+      - typeorm_example
     app_db_users:
       - user: typeorm_usr
         password: "tYPe0rm!01"
-        privilege: "typeorm_sample.*:ALL"
+        privilege: "typeorm_example.*:ALL"
     build_target: build
   tasks:
     - block:
