@@ -28,7 +28,7 @@
         </tr>
     </tbody>
 </table>
-<pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+<pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
 
 <div bsModal #formModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
     <div class="modal-dialog">

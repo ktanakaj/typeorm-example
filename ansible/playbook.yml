@@ -58,6 +58,8 @@
           yum: name=nginx state=latest
         - name: Install the latest version of Git
           yum: name=git state=latest
+        - name: Install the latest version of Chromium
+          yum: name=chromium state=latest
       - block:
         - name: Install "yarn" node.js package globally
           npm: name=yarn global=yes
@@ -95,6 +97,10 @@
           firewalld: service=http permanent=true state=enabled
         - name: Open port for MySQL only internal zone
           firewalld: service=mysql permanent=true state=enabled zone=internal
+        - name: Open port for angular-cli only internal zone
+          firewalld: port=4200/tcp permanent=true state=enabled zone=internal
+        - name: Open port for angular-cli only internal zone
+          firewalld: port=9876/tcp permanent=true state=enabled zone=internal
         - name: Set private ip addresses to internal zone
           firewalld: source='172.16.0.0/12' permanent=true zone=internal state=enabled
         - name: Action to reload service firewalld

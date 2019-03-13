@@ -7,22 +7,21 @@ This is a example application for [TypeORM](https://github.com/typeorm/typeorm) 
 
 ## Environment
 * CentOS 7
-* Node.js v8.x
+* Node.js v10.x
 * nginx 1.12.x
 * MySQL 5.7
 * TypeScript 3.x
-* TypeORM 0.2.7
+* TypeORM 0.2.x
 * TypeDI 0.8.0
 * routing-controllers 0.7.7
-* Angular 6.x
-    * webpack 4.x
+* Angular 7.x
     * ngx-translate 10.x
-* swagger-jsdoc 1.x
-* Mocha 5.x
+* swagger-jsdoc 3.x
+* Mocha 6.x
     * Power-assert 1.x
 
 ### Development environment
-* Vagrant 2.1.x - Virtual machine management
+* Vagrant 2.2.x - Virtual machine management
     * VirtualBox 5.2.x - Virtual machine
     * vagrant-vbguest - Vagrant plug-in
 * Visual Studio Code - Editor

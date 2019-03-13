@@ -12,7 +12,7 @@ import { BlogService } from './blog.service';
  * ブログページコンポーネントクラス。
  */
 @Component({
-	templateUrl: 'app/blogs/blog.component.html',
+	templateUrl: './blog.component.html',
 	providers: [BlogService],
 })
 export class BlogComponent implements OnInit {

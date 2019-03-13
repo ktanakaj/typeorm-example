@@ -20,7 +20,7 @@ interface ArticleForm extends Article {
  * ブログ記事ページコンポーネントクラス。
  */
 @Component({
-	templateUrl: 'app/articles/article.component.html',
+	templateUrl: './article.component.html',
 	providers: [BlogService, ArticleService],
 })
 export class ArticleComponent implements OnInit {

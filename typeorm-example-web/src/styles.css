@@ -1,0 +1,39 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin top by header height */
+    padding-top: 56px;
+    /* Margin bottom by footer height */
+    margin-bottom: 2rem;
+}
+
+fieldset {
+    margin-bottom: 0.85em;
+}
+
+form .ng-invalid {
+    background-color: #FFDAB9;
+}
+
+form .ng-valid {
+    background-color: #E5FFCC;
+}
+
+.warning {
+    color: #d08d2e;
+}
+
+.error {
+    color: #d9534f;
+}
+
+.modal-body {
+    white-space: pre-line;
+}
+
+.btn {
+    margin-right: 5px;
+}

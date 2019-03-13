@@ -26,8 +26,8 @@ location = / {
     rewrite .* /index.html last;
 }
 
-location ~ /(app|i18n|styles|.+?\..+?)($|/) {
-    root {{ app_web_dir }}/public;
+location ~ /(assets|.+?\..+?)($|/) {
+    root {{ app_web_dir }}/dist/typeorm-example-web;
     proxy_no_cache 1;
     proxy_cache_bypass 1;
     sendfile off;

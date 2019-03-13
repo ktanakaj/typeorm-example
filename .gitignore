@@ -20,9 +20,8 @@ doc/*.mwb.*
 typeorm-example/dist
 typeorm-example/doc
 typeorm-example/config/local.yaml
-typeorm-example-web/public/bundle.js
-typeorm-example-web/public/bundle.js.map
+typeorm-example-web/dist
+typeorm-example-web/tmp
+typeorm-example-web/out-tsc
 typeorm-example-web/doc
-typeorm-example-web/obj
-typeorm-example-web/bin
 !.gitkeep

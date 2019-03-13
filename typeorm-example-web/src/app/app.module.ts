@@ -1,14 +1,16 @@
-﻿/**
- * @file TypeORMブログサンプルルートモジュール。
+/**
+ * アプリのルートモジュール。
+ * @module ./app/app.module
  */
-import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CollapseModule, ModalModule, PaginationModule } from 'ngx-bootstrap';
+
 import browserHelper from './core/browser-helper';
 import { AppComponent } from './app.component';
 import { BlogComponent } from './blogs/blog.component';
@@ -25,7 +27,7 @@ const appRoutes: Routes = [
  * デフォルトのエラーハンドラー。
  */
 @Injectable()
-class DefaultErrorHandler implements ErrorHandler {
+export class DefaultErrorHandler implements ErrorHandler {
 	/**
 	 * サービスをDIしてハンドラーを生成する。
 	 * @param translate 国際化サービス。
@@ -51,9 +53,14 @@ class DefaultErrorHandler implements ErrorHandler {
 }
 
 /**
- * TypeORMブログサンプルルートモジュールクラス。
+ * アプリのルートモジュールクラス。
  */
 @NgModule({
+	declarations: [
+		AppComponent,
+		BlogComponent,
+		ArticleComponent,
+	],
 	imports: [
 		BrowserModule,
 		FormsModule,
@@ -62,18 +69,13 @@ class DefaultErrorHandler implements ErrorHandler {
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
-				useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './i18n/'),
+				useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/'),
 				deps: [HttpClient]
 			}
 		}),
 		CollapseModule.forRoot(),
 		ModalModule.forRoot(),
 		PaginationModule.forRoot(),
-	],
-	declarations: [
-		AppComponent,
-		BlogComponent,
-		ArticleComponent,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: browserHelper.getLocale() },
