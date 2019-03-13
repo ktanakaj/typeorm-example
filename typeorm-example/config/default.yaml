@@ -5,7 +5,7 @@
     port: 3306
     username: "typeorm_usr"
     password: "tYPe0rm!01"
-    database: "typeorm_sample"
+    database: "typeorm_example"
     synchronize: true
   log4js:
     pm2: true
@@ -16,17 +16,17 @@
         type: 'stderr'
       access: # アクセスログ
         type: "dateFile"
-        filename: "/var/log/local/typeorm-sample/access.log"
+        filename: "/var/log/local/typeorm-example/access.log"
         pattern: "-yyyy-MM-dd"
         backups: 10
       error: # エラーログ
         type: "dateFile"
-        filename: "/var/log/local/typeorm-sample/error.log"
+        filename: "/var/log/local/typeorm-example/error.log"
         pattern: "-yyyy-MM-dd"
         maxLogSize: 107374182400 # 100MB
       debug: # デバッグログ
         type: "file"
-        filename: "/var/log/local/typeorm-sample/debug.log"
+        filename: "/var/log/local/typeorm-example/debug.log"
         backups: 10
         maxLogSize: 10737418240 # 10MB
     categories:
@@ -48,9 +48,9 @@
   swagger:
     swagger: "2.0"
     info:
-      title: "typeorm-sample"
-      version: 0.2.3
-      description: "typeorm-sample API。"
+      title: "typeorm-example"
+      version: 0.2.4
+      description: "typeorm-example API。"
     basePath: "/api"
     consumes:
       - "application/json"

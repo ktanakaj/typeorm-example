@@ -1,6 +1,6 @@
 {
   "apps": [{
-    "name": "typeorm-sample",
+    "name": "typeorm-example",
     "script": "./dist/index.js",
     "watch": true,
     "ignore_watch": ["node_modules", "src", "test", "doc"],
