@@ -5,8 +5,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import testHelper from '../test-helper';
 import { TranslateService } from '@ngx-translate/core';
-import { HeaderComponent } from './layout/header.component';
-import { SidebarComponent } from './layout/sidebar.component';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -15,8 +13,6 @@ describe('AppComponent', () => {
 	beforeEach(async(() => {
 		testHelper.configureTestingModule({
 			declarations: [
-				HeaderComponent,
-				SidebarComponent,
 				AppComponent
 			],
 		}).compileComponents();

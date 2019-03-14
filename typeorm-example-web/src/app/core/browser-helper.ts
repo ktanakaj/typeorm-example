@@ -20,7 +20,7 @@ function getLocale(): string {
 	try {
 		return navigator.language;
 	} catch (e) {
-		return "en-US";
+		return 'en-US';
 	}
 }
 
@@ -33,17 +33,8 @@ function redirect(url: string): void {
 	window.location.href = url;
 }
 
-/**
- * ページを再読み込みする。
- */
-function reload(): void {
-	// ※ ブラウザの素の再読み込み。Angular2のルートは呼ばれない
-	window.location.reload(true);
-}
-
 export default {
-	getLanguage: getLanguage,
-	getLocale: getLocale,
-	redirect: redirect,
-	reload: reload,
+	getLanguage,
+	getLocale,
+	redirect,
 };

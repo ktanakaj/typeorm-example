@@ -4,12 +4,10 @@
  */
 import 'rxjs/add/operator/retry';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Article } from './article.model';
 import { Tag } from './tag.model';
-
-/** 通信失敗時のリトライ回数。 */
-const MAX_RETRY = 3;
 
 /**
  * ブログ記事サービスクラス。
@@ -39,7 +37,7 @@ export class ArticleService {
 			params = params.set('tag', String(tag));
 		}
 		return this.http.get<{ count: number, list: Article[] }>('/api/articles/', { params })
-			.retry(MAX_RETRY)
+			.retry(environment.maxRetry)
 			.toPromise();
 	}
 
@@ -50,9 +48,7 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	findById(id: number): Promise<Article> {
-		return this.http.get<Article>('/api/articles/' + id)
-			.retry(MAX_RETRY)
-			.toPromise();
+		return this.http.get<Article>('/api/articles/' + id).retry(environment.maxRetry).toPromise();
 	}
 
 	/**
@@ -62,8 +58,7 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	insert(article: Article): Promise<Article> {
-		return this.http.post<Article>('/api/articles/', article)
-			.toPromise();
+		return this.http.post<Article>('/api/articles/', article).toPromise();
 	}
 
 	/**
@@ -73,8 +68,7 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	update(article: Article): Promise<Article> {
-		return this.http.put<Article>('/api/articles/' + article.id, article)
-			.toPromise();
+		return this.http.put<Article>('/api/articles/' + article.id, article).toPromise();
 	}
 
 	/**
@@ -84,7 +78,6 @@ export class ArticleService {
 	 * @throws 通信エラーの場合。
 	 */
 	delete(id: number): Promise<Article> {
-		return this.http.delete<Article>('/api/articles/' + id)
-			.toPromise();
+		return this.http.delete<Article>('/api/articles/' + id).toPromise();
 	}
 }

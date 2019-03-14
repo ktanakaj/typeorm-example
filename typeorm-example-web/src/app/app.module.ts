@@ -4,7 +4,7 @@
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -44,7 +44,7 @@ export class DefaultErrorHandler implements ErrorHandler {
 			error = error.rejection;
 		}
 		// TODO: エラーの種類ごとに切り替え
-		let msgId = 'ERROR.FATAL';
+		const msgId = 'ERROR.FATAL';
 		console.error(error);
 		this.translate.get(msgId).subscribe((res: string) => {
 			window.alert(res);

@@ -21,6 +21,7 @@ interface ArticleForm extends Article {
  */
 @Component({
 	templateUrl: './article.component.html',
+	styleUrls: ['./article.component.css'],
 	providers: [BlogService, ArticleService],
 })
 export class ArticleComponent implements OnInit {
@@ -33,9 +34,9 @@ export class ArticleComponent implements OnInit {
 	/** ブログ記事総数 */
 	length: number;
 	/** 選択中のページ */
-	currentPage: number = 1;
+	currentPage = 1;
 	/** 1ページの表示件数 */
-	pageMax: number = 10;
+	pageMax = 10;
 	/** ブログ記事フォーム */
 	articleForm: ArticleForm;
 	/** エラーメッセージ */
@@ -63,7 +64,7 @@ export class ArticleComponent implements OnInit {
 		this.blog = await this.blogService.findById(this.route.snapshot.params['blogId']);
 		this.route.queryParamMap
 			.subscribe(async () => {
-				this.tag = this.route.snapshot.queryParams["tag"];
+				this.tag = this.route.snapshot.queryParams['tag'];
 				return await this.loadPage(this.currentPage);
 			});
 	}
@@ -109,7 +110,7 @@ export class ArticleComponent implements OnInit {
 	 */
 	async submitForm(): Promise<void> {
 		this.error = '';
-		let article = this.formToArticle(this.articleForm);
+		const article = this.formToArticle(this.articleForm);
 		try {
 			if (article.id) {
 				await this.articleService.update(article);
@@ -133,7 +134,7 @@ export class ArticleComponent implements OnInit {
 	 * @returns 記事フォーム。
 	 */
 	private articleToForm(article: Article): ArticleForm {
-		let form: ArticleForm = Object.assign({}, article);
+		const form: ArticleForm = Object.assign({}, article);
 		form.tag = article.tags.map((t) => t.tag).join(' ');
 		return form;
 	}
@@ -144,8 +145,8 @@ export class ArticleComponent implements OnInit {
 	 * @returns 記事。
 	 */
 	private formToArticle(form: ArticleForm): Article {
-		let article: Article = Object.assign({}, form);
-		for (let tag of form.tag.split(' ')) {
+		const article: Article = Object.assign({}, form);
+		for (const tag of form.tag.split(' ')) {
 			article.tags.push({ tag });
 		}
 		return article;

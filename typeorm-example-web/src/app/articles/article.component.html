@@ -1,45 +1,49 @@
 <h1 *ngIf="blog">{{ blog.title | translate }}</h1>
-<div>
-    <form #f="ngForm" (ngSubmit)="loadPage(currentPage)" novalidate>
-        <button type="submit" class="btn btn-primary btn-sm">{{ "UPDATE" | translate }}</button>
-        <button type="button" class="btn btn-warning btn-sm" (click)="openForm()">{{ "NEW" | translate }}</button>
-    </form>
-    <pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>{{ "ARTICLE.ID" | translate }}</th>
-            <th>{{ "ARTICLE.TITLE" | translate }}</th>
-            <th>{{ "ARTICLE.BODY" | translate }}</th>
-            <th>{{ "TAG.TAG" | translate }}</th>
-            <th>{{ "ARTICLE.CREATED_AT" | translate }}</th>
-            <th>{{ "ARTICLE.UPDATED_AT" | translate }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let article of articles">
-            <td>{{ article.id }}</td>
-            <td>{{ article.title }}</td>
-            <td class="multiline">{{ article.body }}</td>
-            <td>
-                <span *ngFor="let tag of article.tags">
+
+<form #f="ngForm" (ngSubmit)="loadPage(currentPage)" class="mb-3" novalidate>
+    <button type="submit" class="btn btn-primary btn-sm">{{ "UPDATE" | translate }}</button>
+    <button type="button" class="btn btn-warning btn-sm" (click)="openForm()">{{ "NEW" | translate }}</button>
+</form>
+<pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" (pageChanged)="pageChanged($event)" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>{{ "ARTICLE.ID" | translate }}</th>
+                <th>{{ "ARTICLE.TITLE" | translate }}</th>
+                <th>{{ "ARTICLE.BODY" | translate }}</th>
+                <th>{{ "TAG.TAG" | translate }}</th>
+                <th>{{ "ARTICLE.CREATED_AT" | translate }}</th>
+                <th>{{ "ARTICLE.UPDATED_AT" | translate }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let article of articles">
+                <td>{{ article.id }}</td>
+                <td>{{ article.title }}</td>
+                <td class="multiline">{{ article.body }}</td>
+                <td>
+                    <span *ngFor="let tag of article.tags">
                     <a routerLink="/blogs/{{ blog.id }}/articles/" [queryParams]="{ tag: tag.tag }">{{ tag.tag }}</a>
                 </span>
-            </td>
-            <td>{{ article.createdAt | date:'short' }}</td>
-            <td>{{ article.updatedAt | date:'short' }}</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-sm" (click)="openForm(article.id)">{{ "EDIT" | translate }}</button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(article.id)">{{ "DELETE" | translate }}</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                </td>
+                <td>{{ article.createdAt | date:'short' }}</td>
+                <td>{{ article.updatedAt | date:'short' }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="openForm(article.id)">{{ "EDIT" | translate }}</button>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(article.id)">{{ "DELETE" | translate }}</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <pagination [boundaryLinks]="true" [totalItems]="length" [(ngModel)]="currentPage" itemsPerPage="{{ pageMax }}" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
 
 <div bsModal #formModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content" *ngIf="articleForm">
             <div class="modal-header">
                 <h4 class="modal-title pull-left"><span *ngIf="!articleForm.id">{{ "ARTICLE_PAGE.NEW_TITLE" | translate }}</span><span *ngIf="articleForm.id">{{ "ARTICLE_PAGE.EDIT_TITLE" | translate }}</span></h4>

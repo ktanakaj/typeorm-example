@@ -13,6 +13,7 @@ import { BlogService } from './blog.service';
  */
 @Component({
 	templateUrl: './blog.component.html',
+	styleUrls: ['./blog.component.css'],
 	providers: [BlogService],
 })
 export class BlogComponent implements OnInit {
@@ -21,9 +22,9 @@ export class BlogComponent implements OnInit {
 	/** ブログ総数 */
 	length: number;
 	/** 選択中のページ */
-	currentPage: number = 1;
+	currentPage = 1;
 	/** 1ページの表示件数 */
-	pageMax: number = 10;
+	pageMax = 10;
 	/** ブログ情報フォーム */
 	blogForm: Blog;
 	/** エラーメッセージ */

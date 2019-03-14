@@ -4,11 +4,9 @@
  */
 import 'rxjs/add/operator/retry';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Blog } from './blog.model';
-
-/** 通信失敗時のリトライ回数。 */
-const MAX_RETRY = 3;
 
 /**
  * ブログサービスクラス。
@@ -33,7 +31,7 @@ export class BlogService {
 			.set('offset', String(offset))
 			.set('limit', String(limit));
 		return this.http.get<{ count: number, list: Blog[] }>('/api/blogs/', { params })
-			.retry(MAX_RETRY)
+			.retry(environment.maxRetry)
 			.toPromise();
 	}
 
@@ -44,9 +42,7 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	findById(id: number): Promise<Blog> {
-		return this.http.get<Blog>('/api/blogs/' + id)
-			.retry(MAX_RETRY)
-			.toPromise();
+		return this.http.get<Blog>('/api/blogs/' + id).retry(environment.maxRetry).toPromise();
 	}
 
 	/**
@@ -56,8 +52,7 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	insert(blog: Blog): Promise<Blog> {
-		return this.http.post<Blog>('/api/blogs/', blog)
-			.toPromise();
+		return this.http.post<Blog>('/api/blogs/', blog).toPromise();
 	}
 
 	/**
@@ -67,8 +62,7 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	update(blog: Blog): Promise<Blog> {
-		return this.http.put<Blog>('/api/blogs/' + blog.id, blog)
-			.toPromise();
+		return this.http.put<Blog>('/api/blogs/' + blog.id, blog).toPromise();
 	}
 
 	/**
@@ -78,7 +72,6 @@ export class BlogService {
 	 * @throws 通信エラーの場合。
 	 */
 	delete(id: number): Promise<Blog> {
-		return this.http.delete<Blog>('/api/blogs/' + id)
-			.toPromise();
+		return this.http.delete<Blog>('/api/blogs/' + id).toPromise();
 	}
 }
