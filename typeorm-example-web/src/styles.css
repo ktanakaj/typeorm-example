@@ -37,3 +37,7 @@ form .ng-valid {
 .btn {
     margin-right: 5px;
 }
+
+.text-prewrap {
+    white-space: pre-wrap;
+}

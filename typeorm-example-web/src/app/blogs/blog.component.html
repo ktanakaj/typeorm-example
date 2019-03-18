@@ -44,29 +44,29 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form #f="ngForm" (ngSubmit)="submitForm()" class="form-horizontal" novalidate>
-                    <fieldset class="form-group">
-                        <label for="blogForm.title" class="control-label col-xs-3">{{ "BLOG.TITLE" | translate }}</label>
-                        <div class="col-xs-8">
+                <form #f="ngForm" (ngSubmit)="submitForm()" novalidate>
+                    <div class="form-group row">
+                        <label for="blogForm.title" class="col-form-label col-3">{{ "BLOG.TITLE" | translate }}</label>
+                        <div class="col-9">
                             <input type="text" id="blogForm.title" class="form-control" name="title" [(ngModel)]="blogForm.title" #title="ngModel" placeholder="" required maxlength="255">
                             <div class="warning" *ngIf="title.errors">
                                 <div [hidden]="!title.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
                                 <div [hidden]="!title.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
                             </div>
                         </div>
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <label for="blogForm.author" class="control-label col-xs-3">{{ "BLOG.AUTHOR" | translate }}</label>
-                        <div class="col-xs-8">
+                    </div>
+                    <div class="form-group row">
+                        <label for="blogForm.author" class="col-form-label col-3">{{ "BLOG.AUTHOR" | translate }}</label>
+                        <div class="col-9">
                             <input type="text" id="blogForm.author" class="form-control" name="author" [(ngModel)]="blogForm.author" #author="ngModel" placeholder="" required maxlength="255">
                             <div class="warning" *ngIf="author.errors">
                                 <div [hidden]="!author.errors.required">{{ "VALIDATION.REQUIRED" | translate }}</div>
                                 <div [hidden]="!author.errors.maxlength">{{ "VALIDATION.MAX_LENGTH" | translate:{maxlength:255} }}</div>
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                     <div class="form-group">
-                        <div class="col-xs-offset-3 col-xs-8">
+                        <div class="offset-2 col-10">
                             <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "SUBMIT" | translate }}</button>
                             <button type="button" class="btn btn-secondary btn-sm" (click)="closeForm()">{{ "BACK" | translate }}</button>
                             <div class="error">{{ error | translate }}</div>
@@ -89,9 +89,7 @@
             </div>
             <div class="modal-body">
                 <form #f="ngForm" (ngSubmit)="closeDelete()" novalidate>
-                    <fieldset class="form-group">
-                        <div>{{ "CONFIRM_DELETE_BODY" | translate:blogForm }}</div>
-                    </fieldset>
+                    <div class="form-group">{{ "CONFIRM_DELETE_BODY" | translate:blogForm }}</div>
                     <button type="button" class="btn btn-danger btn-sm" (click)="delete()">{{ "DELETE" | translate }}</button>
                     <button type="submit" class="btn btn-secondary btn-sm">{{ "BACK" | translate }}</button>
                     <div class="error">{{ error | translate }}</div>
