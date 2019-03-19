@@ -1,9 +1,9 @@
 /**
  * タグエンティティクラスのモジュール。
- * @module ./dao/entities/tag
+ * @module ./entities/tag
  */
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
-import { IsNotEmpty } from "class-validator";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
 
 /**
  * タグエンティティクラス。

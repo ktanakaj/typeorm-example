@@ -2,13 +2,13 @@
  * ブログ記事サービスクラスのモジュール。
  * @module ./services/article-service
  */
-import { Service } from "typedi";
-import { Repository, FindManyOptions } from "typeorm";
-import { OrmRepository } from "typeorm-typedi-extensions";
-import { BadRequestError, NotFoundError } from "routing-controllers";
-import { Blog } from "../entities/blog";
-import { Article } from "../entities/article";
-import { Tag } from "../entities/tag";
+import { Service } from 'typedi';
+import { Repository } from 'typeorm';
+import { OrmRepository } from 'typeorm-typedi-extensions';
+import { BadRequestError, NotFoundError } from 'routing-controllers';
+import { Blog } from '../entities/blog';
+import { Article } from '../entities/article';
+import { Tag } from '../entities/tag';
 
 /**
  * ブログ記事サービスクラス。
@@ -42,8 +42,7 @@ export class ArticleService {
 			// FIXME: It't not working in typeorm 0.2.6
 			// where['tags'] = [{ tag }];
 		}
-		const op: FindManyOptions<Article> = { where, skip, take, relations: ['blog', 'tags'] };
-		return this.articleRepository.findAndCount(op);
+		return this.articleRepository.findAndCount({ where, skip, take, relations: ['blog', 'tags'], order: { createdAt: 'DESC' } });
 	}
 
 	/**
@@ -69,7 +68,7 @@ export class ArticleService {
 	async insert(article: Article): Promise<Article> {
 		const blog = await this.blogRepository.findOne(article.blog.id);
 		if (!blog) {
-			throw new NotFoundError(`blog is not found`);
+			throw new NotFoundError('blog is not found');
 		}
 		article.tags = await this.relateTags(article.tags);
 		return this.articleRepository.save(article);
@@ -83,10 +82,10 @@ export class ArticleService {
 	async update(article: Article): Promise<Article> {
 		const old = await this.findOne(article.id);
 		if (!old) {
-			throw new NotFoundError(`article is not found`);
+			throw new NotFoundError('article is not found');
 		}
 		if (article.blog.id !== old.blog.id) {
-			throw new BadRequestError(`blog id can't be changed`);
+			throw new BadRequestError("blog id can't be changed");
 		}
 		article.tags = await this.relateTags(article.tags);
 		return this.articleRepository.save(Object.assign(old, article));
@@ -100,7 +99,7 @@ export class ArticleService {
 	async delete(id: number): Promise<Article> {
 		const article = await this.findOne(id);
 		if (!article) {
-			throw new NotFoundError(`article is not found`);
+			throw new NotFoundError('article is not found');
 		}
 		return this.articleRepository.remove(article);
 	}
@@ -111,9 +110,9 @@ export class ArticleService {
 	 * @returns 置き換え後のタグ配列。
 	 */
 	async relateTags(tags: Tag[]): Promise<Tag[]> {
-		let results: Tag[] = [];
-		for (let tag of tags) {
-			let t = await this.tagRepository.findOne({ tag: tag.tag });
+		const results: Tag[] = [];
+		for (const tag of tags) {
+			const t = await this.tagRepository.findOne({ tag: tag.tag });
 			results.push(t ? t : tag);
 		}
 		return results;

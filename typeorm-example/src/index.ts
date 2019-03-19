@@ -1,14 +1,14 @@
 /**
  * @file TypeORMサンプルサーバー起動スクリプト。
  */
-import "reflect-metadata";
+import 'reflect-metadata';
 import * as path from 'path';
 import * as config from 'config';
 import * as log4js from 'log4js';
 import 'source-map-support/register';
-import { createConnection, useContainer as useContainerForOrm } from "typeorm";
-import { Container } from "typedi";
-import { createExpressServer, useContainer as useContainerForRouting } from "routing-controllers";
+import { createConnection, useContainer as useContainerForOrm } from 'typeorm';
+import { Container } from 'typedi';
+import { createExpressServer, useContainer as useContainerForRouting } from 'routing-controllers';
 import fileUtils from './core/file-utils';
 const packagejson = require('../package.json');
 
@@ -21,14 +21,14 @@ useContainerForRouting(Container);
 const options = Object.assign({}, config['database']);
 options['logging'] = ['query', 'error'];
 options['entities'] = [
-	__dirname + "/entities/{*.ts,*.js}"
+	__dirname + '/entities/{*.ts,*.js}'
 ];
 createConnection(options).then(() => {
 	// Expressサーバー作成
 	const app = createExpressServer({
-		routePrefix: "/api",
-		controllers: [__dirname + "/controllers/*.js"],
-		middlewares: [__dirname + "/middlewares/*.js"],
+		routePrefix: '/api',
+		controllers: [__dirname + '/controllers/*.js'],
+		middlewares: [__dirname + '/middlewares/*.js'],
 	});
 
 	// log4jsでアクセスログ出力設定

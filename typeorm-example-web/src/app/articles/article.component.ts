@@ -146,7 +146,7 @@ export class ArticleComponent implements OnInit {
 	 */
 	private formToArticle(form: ArticleForm): Article {
 		const article: Article = Object.assign({}, form);
-		for (const tag of form.tag.split(' ')) {
+		for (const tag of form.tag.split(' ').filter((v) => v !== '')) {
 			article.tags.push({ tag });
 		}
 		return article;

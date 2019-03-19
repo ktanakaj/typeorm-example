@@ -2,10 +2,10 @@
  * ブログ記事コントローラクラスのモジュール。
  * @module ./controllers/article-controller
  */
-import { JsonController, Param, Body, Get, Post, Put, Delete, QueryParam } from "routing-controllers";
-import { Inject } from "typedi";
-import { Article } from "../entities/article";
-import { ArticleService } from "../services/article-service";
+import { JsonController, Param, Body, Get, Post, Put, Delete, QueryParam } from 'routing-controllers';
+import { Inject } from 'typedi';
+import { Article } from '../entities/article';
+import { ArticleService } from '../services/article-service';
 
 /**
  * @swagger
@@ -104,7 +104,7 @@ import { ArticleService } from "../services/article-service";
 /**
  * ブログ記事コントローラクラス。
  */
-@JsonController("/articles")
+@JsonController('/articles')
 export class BlogController {
 
 	/**
@@ -148,10 +148,10 @@ export class BlogController {
 	 *               format: int32
 	 *               description: 総件数
 	 */
-	@Get("/")
-	getAll(@QueryParam("offset") offset: number, @QueryParam("limit") limit: number, @QueryParam("blogId") blogId: number, @QueryParam("tag") tag: string): Promise<{ list: Article[], count: number }> {
-		return this.articleService.findAndCount(offset, limit, blogId, tag)
-			.then(([list, count]) => { return { list, count }; });
+	@Get('/')
+	async getAll(@QueryParam('offset') offset: number, @QueryParam('limit') limit: number, @QueryParam('blogId') blogId: number, @QueryParam('tag') tag: string): Promise<{ list: Article[], count: number }> {
+		const [list, count] = await this.articleService.findAndCount(offset, limit, blogId, tag);
+		return { list, count };
 	}
 
 	/**
@@ -172,8 +172,8 @@ export class BlogController {
 	 *       404:
 	 *         $ref: '#/responses/NotFound'
 	 */
-	@Get("/:id")
-	getOne(@Param("id") id: number): Promise<Article> {
+	@Get('/:id')
+	getOne(@Param('id') id: number): Promise<Article> {
 		return this.articleService.findOne(id);
 	}
 
@@ -200,7 +200,7 @@ export class BlogController {
 	 *       400:
 	 *         $ref: '#/responses/BadRequest'
 	 */
-	@Post("/")
+	@Post('/')
 	post(@Body({ required: true }) article: Article): Promise<Article> {
 		return this.articleService.insert(article);
 	}
@@ -231,8 +231,8 @@ export class BlogController {
 	 *       404:
 	 *         $ref: '#/responses/NotFound'
 	 */
-	@Put("/:id")
-	put(@Param("id") id: number, @Body({ required: true }) article: Article): Promise<Article> {
+	@Put('/:id')
+	put(@Param('id') id: number, @Body({ required: true }) article: Article): Promise<Article> {
 		article.id = id;
 		return this.articleService.update(article);
 	}
@@ -255,8 +255,8 @@ export class BlogController {
 	 *       404:
 	 *         $ref: '#/responses/NotFound'
 	 */
-	@Delete("/:id")
-	remove(@Param("id") id: number): Promise<Article> {
+	@Delete('/:id')
+	remove(@Param('id') id: number): Promise<Article> {
 		return this.articleService.delete(id);
 	}
 }

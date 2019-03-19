@@ -1,16 +1,16 @@
 /**
  * デフォルトエラーハンドラー。
- * @module ./core/default-error-handler
+ * @module ./middlewares/default-error-handler
  */
-import { Request, Response, NextFunction } from "express";
-import { Middleware, ExpressErrorMiddlewareInterface, HttpError } from "routing-controllers";
+import { Request, Response, NextFunction } from 'express';
+import { Middleware, ExpressErrorMiddlewareInterface, HttpError } from 'routing-controllers';
 import * as log4js from 'log4js';
 const logger = log4js.getLogger('error');
 
 /**
  * デフォルトエラーハンドラークラス。
  */
-@Middleware({ type: "after" })
+@Middleware({ type: 'after' })
 export class DefaultErrorHandler implements ExpressErrorMiddlewareInterface {
 	/**
 	 * エラーハンドラー。

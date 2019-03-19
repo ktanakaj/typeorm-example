@@ -1,11 +1,11 @@
 /**
  * ブログ記事エンティティクラスのモジュール。
- * @module ./dao/entities/article
+ * @module ./entities/article
  */
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinColumn, JoinTable } from "typeorm";
-import { IsNotEmpty, IsInt } from "class-validator";
-import { Blog } from "./blog";
-import { Tag } from "./tag";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinColumn, JoinTable } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
+import { Blog } from './blog';
+import { Tag } from './tag';
 
 /**
  * ブログ記事エンティティクラス。
@@ -29,7 +29,7 @@ export class Article {
 	title: string;
 
 	/** 本文 */
-	@Column("text")
+	@Column('text')
 	@IsNotEmpty()
 	body: string;
 
@@ -43,7 +43,7 @@ export class Article {
 
 	/** 記事のタグ */
 	@ManyToMany(type => Tag, {
-		cascade: ["insert"],
+		cascade: ['insert'],
 	})
 	@JoinTable()
 	tags: Tag[];

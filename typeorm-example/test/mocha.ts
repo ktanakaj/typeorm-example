@@ -4,9 +4,9 @@
  */
 import * as config from 'config';
 import * as log4js from 'log4js';
-import { createConnection, useContainer as useContainerForOrm } from "typeorm";
-import { Container } from "typedi";
-import { useContainer as useContainerForRouting } from "routing-controllers";
+import { createConnection, useContainer as useContainerForOrm } from 'typeorm';
+import { Container } from 'typedi';
+import { useContainer as useContainerForRouting } from 'routing-controllers';
 
 // ここにフックを入れると全テストの前に自動実行される
 before(async function () {
@@ -22,7 +22,7 @@ before(async function () {
 	const options = Object.assign({}, config['database']);
 	options['logging'] = [/*'query',*/ 'error'];
 	options['entities'] = [
-		__dirname + "/../src/entities/{*.ts,*.js}"
+		__dirname + '/../src/entities/{*.ts,*.js}'
 	];
 	await createConnection(options);
 });

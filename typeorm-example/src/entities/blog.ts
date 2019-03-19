@@ -1,10 +1,10 @@
 /**
  * ブログエンティティクラスのモジュール。
- * @module ./dao/entities/blog
+ * @module ./entities/blog
  */
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
-import { IsNotEmpty } from "class-validator";
-import { Article } from "./article";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
+import { Article } from './article';
 
 /**
  * ブログエンティティクラス。

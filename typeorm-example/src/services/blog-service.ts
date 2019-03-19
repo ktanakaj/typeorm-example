@@ -2,12 +2,12 @@
  * ブログサービスクラスのモジュール。
  * @module ./services/blog-service
  */
-import { Service } from "typedi";
-import { Repository, FindManyOptions } from "typeorm";
-import { OrmRepository } from "typeorm-typedi-extensions";
-import { BadRequestError, NotFoundError } from "routing-controllers";
-import { Blog } from "../entities/blog";
-import { Article } from "../entities/article";
+import { Service } from 'typedi';
+import { Repository } from 'typeorm';
+import { OrmRepository } from 'typeorm-typedi-extensions';
+import { BadRequestError, NotFoundError } from 'routing-controllers';
+import { Blog } from '../entities/blog';
+import { Article } from '../entities/article';
 
 /**
  * ブログサービスクラス。
@@ -28,8 +28,7 @@ export class BlogService {
 	 * @returns ブログ一覧。
 	 */
 	async findAndCount(skip: number = 0, take: number = Number.MAX_SAFE_INTEGER): Promise<[Blog[], number]> {
-		const op: FindManyOptions<Blog> = { skip, take };
-		return this.blogRepository.findAndCount(op);
+		return this.blogRepository.findAndCount({ skip, take });
 	}
 
 	/**
@@ -40,7 +39,7 @@ export class BlogService {
 	async findOne(id): Promise<Blog> {
 		const blog = await this.blogRepository.findOne(id);
 		if (!blog) {
-			throw new NotFoundError(`blog is not found`);
+			throw new NotFoundError('blog is not found');
 		}
 		return blog;
 	}
@@ -51,9 +50,9 @@ export class BlogService {
 	 * @returns 作成後のブログ。
 	 */
 	async insert(blog: Blog): Promise<Blog> {
-		let count = await this.blogRepository.count({ title: blog.title });
+		const count = await this.blogRepository.count({ title: blog.title });
 		if (count > 0) {
-			throw new BadRequestError(`blog title is already existed`);
+			throw new BadRequestError('blog title is already existed');
 		}
 		return this.blogRepository.save(blog);
 	}
@@ -66,11 +65,11 @@ export class BlogService {
 	async update(blog: Blog): Promise<Blog> {
 		const old = await this.blogRepository.findOne(blog.id);
 		if (!old) {
-			throw new NotFoundError(`blog is not found`);
+			throw new NotFoundError('blog is not found');
 		}
-		let check = await this.blogRepository.findOne({ title: blog.title });
+		const check = await this.blogRepository.findOne({ title: blog.title });
 		if (check && check.id !== old.id) {
-			throw new BadRequestError(`blog title is already existed`);
+			throw new BadRequestError('blog title is already existed');
 		}
 		return this.blogRepository.save(Object.assign(old, blog));
 	}
@@ -83,11 +82,11 @@ export class BlogService {
 	async delete(id: number): Promise<Blog> {
 		const blog = await this.blogRepository.findOne(id);
 		if (!blog) {
-			throw new NotFoundError(`blog is not found`);
+			throw new NotFoundError('blog is not found');
 		}
-		let count = await this.articleRepository.count({ where: { blogId: id } });
+		const count = await this.articleRepository.count({ where: { blog } });
 		if (count > 0) {
-			throw new BadRequestError(`blog has articles`);
+			throw new BadRequestError('blog has articles');
 		}
 		return this.blogRepository.remove(blog);
 	}

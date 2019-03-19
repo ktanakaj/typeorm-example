@@ -2,7 +2,7 @@
  * @file blog-controller.tsのテスト。
  */
 import * as assert from 'power-assert';
-import { Container } from "typedi";
+import { Container } from 'typedi';
 import { NotFoundError } from 'routing-controllers';
 import { Blog } from '../../src/entities/blog';
 import { BlogService } from '../../src/services/blog-service';
